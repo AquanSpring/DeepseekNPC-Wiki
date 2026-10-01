@@ -13,6 +13,6 @@
 
 模组加入了 DeepSeek、花精灵和回声鲸三位伙伴，并提供 AI 聊天与记忆、离线 Terraria Wiki 查询、药草园管理、采掘、钓鱼、物品拾取和战斗辅助等功能。
 
-[详细介绍与使用说明](https://3312317.github.io/DeepseekNPC-Wiki/)
+[详细介绍与使用说明]([https://3312317.github.io/DeepseekNPC-Wiki/](https://aquanspring.github.io/DeepseekNPC-Wiki/))
 
 </div>
