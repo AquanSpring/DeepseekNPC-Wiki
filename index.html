@@ -2589,7 +2589,100 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
   [data-visual-global-text-fill-content]::after { animation: none !important; }
   [data-visual-layer-animation] { animation: none !important; }
   html[data-visual-global-text-animation] body :is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,th,td,caption,figcaption,blockquote,code,pre) { animation: none !important; }
-}</style><script data-visual-effects-runtime="true">(() => {
+}</style>
+<style data-reading-overrides="true">
+/* Keep the visual identity while making long reading sessions calmer. */
+:root {
+  --shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+  --shadow-soft: 0 8px 20px rgba(0, 0, 0, 0.16);
+}
+
+body {
+  background:
+    linear-gradient(180deg, #071321 0%, var(--bg) 42%, #02060d 100%) !important;
+  background-attachment: scroll !important;
+}
+
+body::before {
+  opacity: 0.12;
+}
+
+.topbar {
+  background: rgba(5, 12, 24, 0.96) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
+}
+
+.visual-shell {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+}
+
+.visual-shell::before {
+  opacity: 0.14;
+}
+
+.hero h1,
+[data-visual-text-effect],
+[data-visual-text-layers] {
+  color: var(--text) !important;
+  -webkit-text-fill-color: var(--text) !important;
+  -webkit-text-stroke: 0 transparent !important;
+  background: none !important;
+  background-image: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  filter: none !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+
+[data-visual-text-fill-content]::before,
+[data-visual-text-fill-content]::after,
+[data-visual-global-text-fill-content]::before,
+[data-visual-global-text-fill-content]::after {
+  display: none !important;
+}
+
+.section::before {
+  opacity: 0.42;
+}
+
+.character-card,
+.system-card,
+.step-card,
+.painting-card,
+.note-card,
+.stat,
+.side-panel,
+.audio-player {
+  box-shadow: var(--shadow-soft);
+}
+
+.manual-overlay {
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+</style><script data-visual-effects-runtime="true">(() => {
   if (window.__vhdEditorHost) return;
   if (window.__visualPageEffects) return;
   window.__visualPageEffects = true;
@@ -2676,7 +2769,25 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
       observer.observe(element);
     });
   };
+  const simplifyGeneratedVisuals = () => {
+    const visualElements = [
+      document.body,
+      ...document.querySelectorAll('[data-visual-composition], [data-visual-replacement], [data-visual-top-line]')
+    ];
+    visualElements.forEach(element => {
+      const preservedStyles = ['font-size', 'font-family']
+        .map(property => [property, element.style.getPropertyValue(property), element.style.getPropertyPriority(property)])
+        .filter(([, value]) => value);
+      element.removeAttribute('style');
+      preservedStyles.forEach(([property, value, priority]) => element.style.setProperty(property, value, priority));
+      [...element.attributes]
+        .filter(attribute => attribute.name.startsWith('data-visual-'))
+        .forEach(attribute => element.removeAttribute(attribute.name));
+    });
+    document.querySelectorAll('[data-visual-top-line-layer]').forEach(element => element.remove());
+  };
   const initialize = () => {
+    simplifyGeneratedVisuals();
     document.querySelectorAll('[data-visual-text-fill-content][data-visual-text-animation]').forEach(element => {
       element.style.removeProperty('animation');
     });
@@ -2794,7 +2905,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
         <div>
           <div class="eyebrow" data-i18n="hero.eyebrow">你的泰拉瑞亚 AI 小伙伴</div>
           <h1 data-i18n="hero.title" data-visual-replacement="managed-animation" data-visual-text-layers="fill stroke shadow" data-visual-text-fill="gradient" data-visual-text-animation="shimmer" data-visual-composition="{&quot;backgroundBase&quot;:&quot;&quot;,&quot;gradientLayer&quot;:&quot;&quot;,&quot;textureLayer&quot;:&quot;&quot;,&quot;decorationLayer&quot;:&quot;&quot;,&quot;textEffect&quot;:&quot;gradient&quot;,&quot;textAnimation&quot;:&quot;shimmer&quot;,&quot;textColor1&quot;:&quot;#FF4D8D&quot;,&quot;textColor2&quot;:&quot;#55E6A5&quot;,&quot;textColor3&quot;:&quot;#9B7BFF&quot;,&quot;textAccentColor&quot;:&quot;#56C8FF&quot;,&quot;textGradientAngle&quot;:90,&quot;textEffectIntensity&quot;:72,&quot;textPatternScale&quot;:180,&quot;textStrokeWidth&quot;:14,&quot;textGlowSize&quot;:22,&quot;textDepth&quot;:4,&quot;textAnimationDuration&quot;:28,&quot;textLayers&quot;:[{&quot;kind&quot;:&quot;fill&quot;,&quot;effect&quot;:&quot;gradient&quot;,&quot;color1&quot;:&quot;#FF4D8D&quot;,&quot;color2&quot;:&quot;#55E6A5&quot;,&quot;color3&quot;:&quot;#9B7BFF&quot;,&quot;accentColor&quot;:&quot;#56C8FF&quot;,&quot;angle&quot;:90,&quot;intensity&quot;:72,&quot;patternScale&quot;:180,&quot;strokeWidth&quot;:14,&quot;glowSize&quot;:22,&quot;depth&quot;:4},{&quot;kind&quot;:&quot;stroke&quot;,&quot;effect&quot;:&quot;outline&quot;,&quot;color1&quot;:&quot;#115BBE&quot;,&quot;color2&quot;:&quot;#0F172A&quot;,&quot;color3&quot;:&quot;#60A5FA&quot;,&quot;accentColor&quot;:&quot;#000000&quot;,&quot;angle&quot;:90,&quot;intensity&quot;:85,&quot;patternScale&quot;:140,&quot;strokeWidth&quot;:18,&quot;glowSize&quot;:8,&quot;depth&quot;:4},{&quot;kind&quot;:&quot;shadow&quot;,&quot;effect&quot;:&quot;neon&quot;,&quot;color1&quot;:&quot;#36ABBC&quot;,&quot;color2&quot;:&quot;#56C8FF&quot;,&quot;color3&quot;:&quot;#9B7BFF&quot;,&quot;accentColor&quot;:&quot;#8B5CF6&quot;,&quot;angle&quot;:90,&quot;intensity&quot;:93,&quot;patternScale&quot;:160,&quot;strokeWidth&quot;:5,&quot;glowSize&quot;:11,&quot;depth&quot;:2}],&quot;textAnimationStrength&quot;:72,&quot;textAnimationDistance&quot;:6,&quot;textAnimationRange&quot;:135,&quot;textAnimationDirection&quot;:0,&quot;textureAnimation&quot;:&quot;&quot;,&quot;textureAnimationDuration&quot;:60,&quot;textureAnimationStrength&quot;:50,&quot;textureAnimationDistance&quot;:24,&quot;textureAnimationDirection&quot;:0,&quot;decorationAnimation&quot;:&quot;&quot;,&quot;decorationAnimationDuration&quot;:70,&quot;decorationAnimationStrength&quot;:55,&quot;decorationAnimationDistance&quot;:28,&quot;decorationAnimationDirection&quot;:0,&quot;backgroundAnimation&quot;:&quot;&quot;,&quot;backgroundAnimationDuration&quot;:72,&quot;backgroundAnimationStrength&quot;:50,&quot;backgroundAnimationDistance&quot;:28,&quot;backgroundAnimationDirection&quot;:0,&quot;managedStyles&quot;:[]}" style="--visual-text-color-1: #FF4D8D; --visual-text-color-2: #55E6A5; --visual-text-color-3: #9B7BFF; --visual-text-accent: #56C8FF; --visual-text-angle: 90deg; --visual-text-intensity: 72%; --visual-text-scale: 180%; --visual-text-stroke: 1.4px; --visual-text-glow: 22px; --visual-text-depth: 4px; --visual-text-duration: 2.8s; --visual-text-fill-color-1: #FF4D8D; --visual-text-fill-color-2: #55E6A5; --visual-text-fill-color-3: #9B7BFF; --visual-text-fill-accent: #56C8FF; --visual-text-fill-angle: 90deg; --visual-text-fill-scale: 180%; --visual-text-shadow-stack: 0 0 2.75px #36ABBC, 0 0 5.5px #56C8FF, 0 0 11px color-mix(in srgb, #8B5CF6 93%, transparent); --visual-text-animation-color-2: #55E6A5; --visual-text-animation-color-3: #9B7BFF; --visual-text-animation-accent: #56C8FF; --visual-text-animation-intensity: 72%; --visual-text-animation-glow: 22px; --visual-text-animation-depth: 4px; --visual-text-motion-strength: 72%; --visual-text-motion-distance: 6px; --visual-text-motion-distance-signed: -6px; --visual-text-motion-range: 135%; --visual-text-motion-negative: -6px; --visual-text-motion-positive: 6px; animation: 2.8s ease-in-out 0s infinite normal none running visualTextShimmer !important; --visual-text-stroke-color: #115BBE; --visual-text-stroke-width: 1.8px;" data-visual-text-fill-content="DeepseekNPC" data-visual-text-stroke="outline" data-visual-text-shadow="neon">DeepseekNPC</h1>
-          <p data-i18n="hero.desc">一个围绕玩家展开的单人陪伴型 Terraria 模组。DeepSeek 负责聊天、记忆、离线 Wiki、自动召唤剑和战斗联动，花精灵负责药草园，回声鲸负责采集、钓鱼与捡物，把陪伴感和工具感真正捏在一起。</p>
+          <p data-i18n="hero.desc">一个围绕玩家展开的单人陪伴型 Terraria 模组。DeepSeek 负责聊天、记忆、离线 Wiki、自动召唤剑和战斗联动，花精灵负责药草园，回声鲸负责分区采掘、钓鱼与捡物，把陪伴感和工具感真正捏在一起。</p>
           <div class="pill-row">
             <div class="pill" data-i18n="hero.pill.single">单人专用</div>
             <div class="pill" data-i18n="hero.pill.chat">DeepSeek 聊天 / 人设 / 记忆</div>
@@ -2916,6 +3027,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
               <ul class="feature-list">
                 <li>右键打开功能 UI，空闲且没有 Boss 时左键可骑乘。</li>
                 <li data-i18n="roles.whale.f2">支持目标物块采掘、定点钓鱼和背包收纳，把工具使用感做成伙伴行为。</li>
+                <li>派遣挖矿时是主鲸 + 3 只小鲸的四人小队，各自在一片 96×96 格作业区里采集，飞过的地方还会点亮小地图。</li>
                 <li>会自动吸附附近掉落物，并集中叼住后统一送回玩家（骑乘时也会触发吸附功能）。</li>
                 <li>拾取节奏覆盖普通物品，也照顾到心、魔力星等即时拾取物，整体体验更顺。</li>
               </ul>
@@ -3001,7 +3113,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
           <article class="step-card">
             <div class="step-number">03</div>
             <h3 data-i18n="quickstart.whale.name">最后让回声鲸进入日常循环</h3>
-            <p>右键回声鲸开界面：挖矿放镐子或钻头和目标物块，钓鱼放鱼竿和鱼饵。需要挖矿、钓鱼、收掉落物时，它会成为最有“陪你一起做事”感觉的那个伙伴。</p>
+            <p>右键回声鲸开界面：挖矿放镐子或钻头和目标物块，钓鱼放鱼竿和鱼饵。派遣挖矿时，主鲸会带三只小鲸分成四片作业区同时采集；需要挖矿、钓鱼、收掉落物时，它会成为最有“陪你一起做事”感觉的那个伙伴。</p>
           </article>
         </div>
       </section>
@@ -3077,14 +3189,15 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
           <article class="note-card">
             <h3 data-i18n="notes.whale.name">回声鲸的行为节奏</h3>
             <p>回声鲸执行采掘或钓鱼任务时，不能同时当坐骑使用；Boss 在场时也不会载玩家。</p>
+            <p>派遣挖矿时，主鲸会和 3 只小鲸分成四片 96×96 格作业区各自采集，挖空后换下一片，不会挤在同一片矿区；飞行途中还会点亮周围小地图。</p>
             <p>开始钓鱼前，鲸鱼背包至少需要 10 格空位。</p>
             <p>这让它更像一个真正正在忙的伙伴，而不是任何状态都能无限切换的万能按钮。</p>
           </article>
 
           <article class="note-card">
             <h3 data-i18n="notes.config.name">填写 Key 与接口配置</h3>
-            <p data-i18n="notes.config.d1">聊天、查 Wiki 和部分联动功能需要先在模组配置里填写 DeepSeek API Key，并确认接口地址等基础信息。</p>
-            <p data-i18n="notes.config.d2">配置完成后再进世界测试连接，避免因为空 Key、接口地址或网络问题导致 NPC 无法回复。</p>
+            <p data-i18n="notes.config.d1">聊天、查 Wiki 和部分联动功能需要先在模组配置里填写 DeepSeek API Key，并保持网络畅通。</p>
+            <p data-i18n="notes.config.d2">配置完成后再进世界测试连接，避免因为空 Key 或网络问题导致 NPC 无法回复。</p>
           </article>
         </div>
       </section>
@@ -3125,7 +3238,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
               <div class="manual-row manual-table-head"><span>入口</span><span>核心用途</span></div>
               <div class="manual-row"><strong>人工智能城镇 NPC</strong><span>人物设定、闲聊、查 Wiki、长期记忆、关系印象、连接检查、快乐度说明和自动召唤剑。</span></div>
               <div class="manual-row"><strong>花精灵城镇宠物</strong><span>抚摸互动、工具管理、24 格收获袋、引领玩家划定草药园、收割并补种成熟或开花草药。</span></div>
-              <div class="manual-row"><strong>回声鲸宠物/坐骑</strong><span>小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板。</span></div>
+              <div class="manual-row"><strong>回声鲸宠物/坐骑</strong><span>小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板；挖矿时主鲸带 3 只小鲸分区采集。</span></div>
               <div class="manual-row"><strong>工具与辅助</strong><span>物品浏览器、地图右键传送、目标重铸、肖像画、Deepseek玩偶、花精灵人偶、鼠标皮肤、Boss 指示、胜利称赞和辅助攻击 HUD。</span></div>
             </div>
             <h4>阅读建议</h4>
@@ -3144,7 +3257,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
             <p>这个 Mod 的核心不是把 NPC 变成指令台，而是在 Terraria 世界里加入能自然对话、能查资料、能做少量托管工作的城镇同伴。聊天、资料查询、宠物工具、DeepSeek 自动剑和战斗辅助各自有独立入口。</p>
             <div class="manual-table cols-3">
               <div class="manual-row manual-table-head"><span>模块</span><span>能做什么</span><span>边界</span></div>
-              <div class="manual-row"><strong>DeepSeek 城镇 NPC</strong><span>单人世界中自动尝试出现，名为“人工智能”；可入住城镇，提供人物设定、连接检查、聊天、查 Wiki、快乐度按钮和自动召唤剑。</span><span>对话功能面向单人体验；她不会作为可击杀目标，也不会替玩家执行世界操作。</span></div>
+              <div class="manual-row"><strong>DeepSeek 城镇 NPC</strong><span>单人世界中自动尝试出现，简中显示名为“人工智能”、英文显示名为“Artificial Intelligence”，固定名字为“DeepSeek”；这些名称指同一个 NPC。可入住城镇，提供人物设定、连接检查、聊天、查 Wiki、快乐度按钮和自动召唤剑。</span><span>对话功能面向单人体验；她不会作为可击杀目标，也不会替玩家执行世界操作。</span></div>
               <div class="manual-row"><strong>闲聊</strong><span>使用人物设定、近期对话、长期记忆、关系印象和场景观察，像同伴一样回应玩家。</span><span>不负责精确配方、概率、掉落、召唤条件、制作站、数值或 Boss 机制；详细资料请查 Wiki。</span></div>
               <div class="manual-row"><strong>查 Wiki</strong><span>使用本地离线 Terraria Wiki 索引和专门模块回答配方、掉落、Boss、宠物、坐骑、饰品、钓鱼、翅膀、装备等资料。</span><span>不读取闲聊记忆，也不把没有命中的资料问题靠模型硬编。</span></div>
               <div class="manual-row"><strong>DeepSeek 自动剑</strong><span>人工智能附近约 90×90 格的搜索框内（每个方向约 45 格）有可攻击敌怪时，只维持一把剑自动追击；没有目标时收回。</span><span>伤害 100、不可暴击、穿透 9999；Boss 类目标只吃 10% 最终伤害。</span></div>
@@ -3152,7 +3265,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
               <div class="manual-row"><strong>回声鲸</strong><span>作为宠物、坐骑和任务伙伴存在；支持搬运掉落物、派遣挖矿和派遣钓鱼。</span><span>骑乘和任务互斥；Boss 在场时不会载玩家。</span></div>
               <div class="manual-row"><strong>物品浏览器与传送</strong><span>按类别浏览、搜索、筛选和排序物品；作弊模式下可生成物品，并允许地图右键传送。</span><span>作弊关闭时仍可浏览，但不能拿取物品或地图传送。</span></div>
               <div class="manual-row"><strong>目标重铸</strong><span>在哥布林重铸界面旁选择目标词缀，自动重复重铸直到命中、钱不够或物品变化。</span><span>仍按原版价格消耗钱币；不能给当前物品不支持的词缀。</span></div>
-              <div class="manual-row"><strong>战斗辅助</strong><span>单人模式下可显示按钮或用“切换辅助攻击”快捷键开启，自动锁定并用当前武器攻击附近敌怪。</span><span>需要配置开启、人工智能已入住且连接成功；不会走位、换装、整理背包或修改世界。</span></div>
+              <div class="manual-row"><strong>战斗辅助</strong><span>单人模式下可显示按钮或用“切换辅助攻击”快捷键开启，自动锁定并用当前武器攻击附近敌怪。</span><span>需要配置开启、人工智能已入住；不会走位、换装、整理背包或修改世界。</span></div>
             </div>
           </div>
         </details>
@@ -3164,22 +3277,21 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
             <h4>基本步骤</h4>
             <ol class="manual-steps">
               <li>安装并启用 Mod，进入单人世界。</li>
-              <li>打开模组配置，填写 DeepSeek API Key。API Base URL 默认是 https://api.deepseek.com。</li>
+              <li>打开模组配置，填写 DeepSeek API Key。接口地址固定为 https://api.deepseek.com，无需手动填写。</li>
               <li>等待“人工智能”和“花精灵”在附近出现，并为她们准备可用房屋。</li>
               <li>和“人工智能”对话，点击“检查连接”确认 API 可用，再进入聊天面板。</li>
               <li>第一次与“人工智能”互动时，如果玩家身上和附近都没有“小鱼干”，她会给出回声鲸召唤物。</li>
               <li>使用“小鱼干”可召唤回声鲸，并获得“鲸歌回响”：慢落且免疫摔落伤害。</li>
               <li>花精灵需要一把再生法杖或再生之斧，才能开始管理草药园。</li>
               <li>Deepseek玩偶和花精灵人偶可在商人处购买，价格均为 25 金；放置后是发光家具，并计作房屋光源。</li>
-              <li>辅助攻击默认关闭；需要在配置中开启，且单人模式、人工智能已入住、连接成功后才会显示按钮或响应快捷键。</li>
+              <li>辅助攻击默认关闭；需要在配置中开启，且单人模式、人工智能已入住后才会显示按钮或响应快捷键。</li>
             </ol>
-            <h4>模型选择</h4>
+            <h4>模型</h4>
             <div class="manual-table cols-3">
               <div class="manual-row manual-table-head"><span>模型</span><span>特点</span><span>建议场景</span></div>
-              <div class="manual-row"><strong>DeepSeek V4 Flash</strong><span>回复更快，适合日常聊天。</span><span>默认选择；普通闲聊、短问答、陪伴体验。</span></div>
-              <div class="manual-row"><strong>DeepSeek V4 Pro</strong><span>更适合复杂问题和长回复。</span><span>复杂说明、长资料整理、需要更稳表达时使用。</span></div>
+              <div class="manual-row"><strong>DeepSeek Flash</strong><span>当前版本使用 DeepSeek Flash，API 标识为 deepseek-flash；回复更快，适合日常聊天。</span><span>普通闲聊、短问答、陪伴体验。</span></div>
             </div>
-            <div class="manual-note">连接异常时，先确认 API Key 没有多余空格，API Base URL 没被误改。网络较慢时可把回复等待时间调大。聊天面板中失败的回复可以重试，正在等待的回复可以取消。辅助攻击也会参考当前 API 设置的成功连接状态。</div>
+            <div class="manual-note">连接异常时，先确认 API Key 没有多余空格，并检查网络是否可用。网络较慢时可把回复等待时间调大。聊天面板中失败的回复可以重试，正在等待的回复可以取消。</div>
           </div>
         </details>
 
@@ -3194,7 +3306,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
               <div class="manual-row"><strong>取消</strong><span>NPC 正在回复时中止本次回复。</span></div>
               <div class="manual-row"><strong>记忆</strong><span>可进行记忆管理</span></div>
               <div class="manual-row"><strong>重新生成</strong><span>对上一条回复的内容或回答失败再重新生成一次。</span></div>
-              <div class="manual-row"><strong>模型切换</strong><span>Flash / Pro 的切换只影响之后的新回复。</span></div>
+              <div class="manual-row"><strong>模型</strong><span>当前版本固定使用 DeepSeek Flash（API 标识：deepseek-flash）。</span></div>
               <div class="manual-row"><strong>滚动聊天记录</strong><span>使用滚轮、鼠标左键拖动右侧滚动条来浏览较长的聊天记录。</span></div>
               <div class="manual-row"><strong>选择与复制历史文字</strong><span>在聊天记录中按住鼠标左键拖动选择文字（按 Ctrl+C可复制选中内容）。</span></div>
               <div class="manual-row"><strong>多行输入</strong><span>内容超过可见区域后，可用滚轮或输入框滚动条上下查看；方向键上/下会跨行移动光标。</span></div>
@@ -3309,15 +3421,19 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
         <details class="manual-chapter">
           <summary data-i18n="manual.ch8.title">8. 回声鲸挖矿</summary>
           <div class="manual-chapter-content">
-            <p>回声鲸挖矿需要玩家预先放好工具和目标物块，适合重复采集同类矿脉或资源块。它会优先在附近找目标，找不到再扩大范围。</p>
+            <p>回声鲸挖矿需要玩家预先放好工具和目标物块。派遣后是主鲸 + 3 只小鲸的四人小队，各自租下一片 96×96 格作业区同时采集；区内挖空后会换到下一片，飞行和采掘途中还会点亮周围小地图。</p>
             <div class="manual-table">
               <div class="manual-row manual-table-head"><span>项目</span><span>说明</span></div>
               <div class="manual-row"><strong>工具槽</strong><span>支持镐子或钻头；工具强度不足时不能派遣。</span></div>
-              <div class="manual-row"><strong>目标槽</strong><span>放入要采掘的实体物块，回声鲸会寻找同类目标。</span></div>
+              <div class="manual-row"><strong>目标槽</strong><span>放入要采掘的实体物块；生命水晶、各色宝石和琥珀也可以作为目标。</span></div>
               <div class="manual-row"><strong>背包</strong><span>20 格任务背包，收纳采掘和钓鱼所得，可全部取出或整理。</span></div>
-              <div class="manual-row"><strong>采掘上限</strong><span>默认单次最多 300 格，可在配置中调到 0 到 1000；设为 0 时不能派遣。</span></div>
-              <div class="manual-row"><strong>续采</strong><span>因背包将满而暂停后，清理空间即可继续。</span></div>
-              <div class="manual-row"><strong>搜索</strong><span>优先搜索附近矿脉，找不到再扩展到全图搜索。</span></div>
+              <div class="manual-row"><strong>采掘上限</strong><span>默认单次最多 300 格，可在配置中调到 0 到 2000；设为 0 时不能派遣。</span></div>
+              <div class="manual-row"><strong>四人小队</strong><span>主鲸 + 3 只小鲸同时出动，共用同一个采掘上限。</span></div>
+              <div class="manual-row"><strong>作业区</strong><span>每片 96×96 格，租约互斥并预留相邻一圈；四只鲸至少相隔两片区域，不会挤在一起。</span></div>
+              <div class="manual-row"><strong>搜索与换区</strong><span>每只鲸只在自己的作业区里找目标；区内采空后标记完成，就近换下一片有矿的区域。</span></div>
+              <div class="manual-row"><strong>地图点亮</strong><span>飞行和采掘时按移动光源的方式点亮周围约 12 格小地图。</span></div>
+              <div class="manual-row"><strong>兜底</strong><span>全图只剩不到四片有矿区时，空闲的鲸会加入队友的作业区协同采集。</span></div>
+              <div class="manual-row"><strong>续采</strong><span>因背包放不下当前掉落物而暂停后，清理空间即可继续。</span></div>
             </div>
           </div>
         </details>
@@ -3389,7 +3505,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
             <div class="manual-table cols-3">
               <div class="manual-row manual-table-head"><span>配置项</span><span>作用</span><span>建议</span></div>
               <div class="manual-row"><strong>API Key</strong><span>连接 DeepSeek API 的密钥。</span><span>只在本机配置，不写入聊天内容。</span></div>
-              <div class="manual-row"><strong>API Base URL</strong><span>DeepSeek 接口地址。</span><span>默认保持 https://api.deepseek.com。</span></div>
+              <div class="manual-row"><strong>接口地址</strong><span>固定为 https://api.deepseek.com。</span><span>不需要手动填写。</span></div>
               <div class="manual-row"><strong>说话活跃度</strong><span>Temperature，范围 0 到 2。</span><span>默认 0.7；低一点更稳，高一点更活泼。</span></div>
               <div class="manual-row"><strong>清空所有 NPC 记忆</strong><span>危险操作，清空已载入玩家的聊天、摘要、关系画像和长期记忆。</span><span>只在确实要重置所有关系时使用。</span></div>
               <div class="manual-row"><strong>回复等待时间</strong><span>请求超时时间，范围 5 到 120 秒。</span><span>默认 30 秒；网络慢时调高。</span></div>
@@ -3397,7 +3513,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
               <div class="manual-row"><strong>作弊模式</strong><span>影响物品浏览器生成、地图传送等。</span><span>正常游玩关闭，需要测试时开启。</span></div>
               <div class="manual-row"><strong>鼠标皮肤</strong><span>开关四帧动画鼠标替换。</span><span>默认开启，按个人习惯选择。</span></div>
               <div class="manual-row"><strong>物品浏览器按钮</strong><span>可开启右键拖动，并配置 X/Y 坐标。</span><span>按钮挡 UI 时开启拖动。</span></div>
-              <div class="manual-row"><strong>回声鲸单次采掘上限</strong><span>范围 0 到 1000，默认 300。</span><span>设为 0 会禁用派遣采掘。</span></div>
+              <div class="manual-row"><strong>回声鲸单次采掘上限</strong><span>范围 0 到 2000，默认 300。</span><span>设为 0 会禁用派遣采掘。</span></div>
               <div class="manual-row"><strong>辅助攻击</strong><span>开启后可用按钮或“切换辅助攻击”快捷键。</span><span>默认关闭；单人模式使用。</span></div>
               <div class="manual-row"><strong>辅助攻击科幻滤镜</strong><span>关闭、简洁、完整三档 HUD。</span><span>默认完整；想清爽可选简洁或关闭。</span></div>
               <div class="manual-row"><strong>辅助攻击按钮</strong><span>可开启右键拖动，并配置 X/Y 坐标。</span><span>按钮挡 UI 时开启拖动。</span></div>
@@ -3412,7 +3528,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
             <div class="manual-table">
               <div class="manual-row manual-table-head"><span>问题</span><span>处理方式</span></div>
               <div class="manual-row"><strong>NPC 不入住</strong><span>准备合格房屋，等待系统重新尝试分配。两名城镇 NPC 都会尽量找房。</span></div>
-              <div class="manual-row"><strong>聊天失败</strong><span>检查 API Key、Base URL、网络状态和等待时间。可在聊天面板中重试。</span></div>
+              <div class="manual-row"><strong>聊天失败</strong><span>检查 API Key、网络状态和等待时间。可在聊天面板中重试。</span></div>
               <div class="manual-row"><strong>Wiki 没查到</strong><span>换成更具体的物品名，或加上“配方”“掉落”“用途”“Boss”“钓鱼”等关键词。</span></div>
               <div class="manual-row"><strong>记忆想全部重来</strong><span>单个 NPC 用记忆面板重置；所有已载入玩家的 NPC 记忆用配置页“清空所有 NPC 记忆”。</span></div>
               <div class="manual-row"><strong>物品浏览器不能拿东西</strong><span>浏览不需要作弊；拿取、生成物品和地图右键传送需要开启作弊模式。</span></div>
@@ -3420,7 +3536,8 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
               <div class="manual-row"><strong>目标重铸不开始</strong><span>确认物品可重铸、已经选择目标词缀、词缀适用于当前物品，并且钱币足够。</span></div>
               <div class="manual-row"><strong>花精灵不收割</strong><span>确认工具槽有再生法杖或再生之斧，草药园已划定，区域里有成熟草药，收获袋有空间。</span></div>
               <div class="manual-row"><strong>草药园最大范围</strong><span>框选矩形最多 6000 格，按宽度 x 高度计算；没有单独宽高上限，刚好 6000 格可确认，超过需要缩小。</span></div>
-              <div class="manual-row"><strong>回声鲸不能挖</strong><span>确认放入镐子或钻头、目标是实体物块、工具强度足够，且采掘上限没有设为 0。</span></div>
+              <div class="manual-row"><strong>回声鲸不能挖</strong><span>确认放入镐子或钻头、目标是实体物块或生命水晶/宝石/琥珀这类特殊资源、工具强度足够，且采掘上限没有设为 0。</span></div>
+              <div class="manual-row"><strong>四只鲸为什么不在一起挖</strong><span>挖矿是分区作业：每只鲸只在自己租下的 96×96 格区域里采集，四只鲸会分散到不同区域；一片采空后会自动换区。</span></div>
               <div class="manual-row"><strong>花精灵不补种</strong><span>她只会在成功收割成熟或开花草药后，把同一种草药补回原位；空地、空盆或被破坏的种植位置需要玩家手动处理。</span></div>
               <div class="manual-row"><strong>回声鲸不能钓熔岩</strong><span>需要具备熔岩钓鱼能力的鱼竿、熔岩鱼饵，或玩家饰品栏中已生效的防熔岩渔具袋、防熔岩钓钩等效果；选择的熔岩体也要达到最低液体格数。</span></div>
               <div class="manual-row"><strong>回声鲸钓不到某类鱼</strong><span>确认派遣时玩家所在环境和高度层。选择提示会显示已锁定环境，具体环境中也会混入对应高度通用渔获。</span></div>
@@ -3429,7 +3546,7 @@ html.visual-effects-page-hidden[data-visual-global-text-animation] body :is(h1,h
               <div class="manual-row"><strong>背包空间不足</strong><span>回声鲸钓鱼前至少需要 10 个鲸鱼背包空位；采掘或花精灵收获袋满了则需要取出或整理。</span></div>
               <div class="manual-row"><strong>夜明涂料在哪</strong><span>夜明涂料属于涂料/油漆类，物品浏览器里看“油漆工具 &gt; 油漆”；不要去普通“染料”分类找。</span></div>
               <div class="manual-row"><strong>肖像画能当光源吗</strong><span>两幅肖像画会在弱光下保持明亮显示，但不算房屋光源；需要房屋光源时放 Deepseek玩偶或花精灵人偶。</span></div>
-              <div class="manual-row"><strong>辅助攻击按钮不出现</strong><span>确认配置已开启、单人模式、人工智能已入住、有成功连接记录，且玩家没有打开地图或背包。</span></div>
+              <div class="manual-row"><strong>辅助攻击按钮不出现</strong><span>确认配置已开启、单人模式、人工智能已入住，且玩家没有打开地图或背包。</span></div>
               <div class="manual-row"><strong>DeepSeek 的剑不出现</strong><span>确认人工智能附近约 90×90 格的搜索框内（每个方向约 45 格）有可攻击敌怪；同一名 DeepSeek 只会维持一把剑，没有目标时会自动收回。</span></div>
             </div>
             <div class="manual-note">DeepSeek 闲聊不是 Wiki；花精灵管理的是已建好的草药园；回声鲸挖矿需要目标物块和足够工具强度；回声鲸钓鱼环境在确认时锁定；战斗辅助是辅助工具，不保证替玩家完成战斗。</div>
@@ -3515,7 +3632,6 @@ const I18N_DATA = new Map([
   ['部分功能偏工具/测试向，可在配置里控制。', 'Some features are tool/testing-oriented and can be controlled in config.'],
   // --- Hero ---
   ['你的泰拉瑞亚 AI 小伙伴', 'Your Terraria AI Companion'],
-  ['一个围绕玩家展开的单人陪伴型 Terraria 模组。DeepSeek 负责聊天、记忆、离线 Wiki、自动召唤剑和战斗联动，花精灵负责药草园，回声鲸负责采集、钓鱼与捡物，把陪伴感和工具感真正捏在一起。', 'A single-player companion Terraria mod built around the player. DeepSeek handles chat, memory, offline Wiki, auto-sword, and combat integration. Flower Elf manages herb gardens. Echo Whale handles mining, fishing, and item pickup — weaving companionship and utility together.'],
   ['单人专用', 'Single-Player'],
   ['DeepSeek 聊天 / 人设 / 记忆', 'DeepSeek Chat / Persona / Memory'],
   ['离线 Terraria Wiki', 'Offline Terraria Wiki'],
@@ -3588,7 +3704,6 @@ const I18N_DATA = new Map([
   ['等她入住后，先从人物设定、聊天和连接检查开始。你会很快摸到这个模组的基调，也能顺手打开离线 Wiki 和后续战斗联动。', 'After she moves in, start with persona settings, chat, and connection check. You\'ll quickly get the feel of the mod and can naturally open the offline Wiki and later combat features.'],
   ['再把花精灵接到药草园', 'Then, Bring Flower Elf to the Garden'],
   ['最后让回声鲸进入日常循环', 'Finally, Let Echo Whale Into Your Daily Loop'],
-  ['右键回声鲸开界面：挖矿放镐子或钻头和目标物块，钓鱼放鱼竿和鱼饵。需要挖矿、钓鱼、收掉落物时，它会成为最有"陪你一起做事"感觉的那个伙伴。', 'Right-click Echo Whale to open its UI: for mining, place a pickaxe/drill and target blocks; for fishing, place a rod and bait. When you need mining, fishing, or item pickup, it becomes the companion that most feels like "doing things together."'],
   // --- Paintings ---
   ['目前已经把 DeepSeek 和花精灵的肖像做成了可放置画作，也新增了可放置的 Deepseek玩偶和花精灵人偶。它们适合用来给基地收尾，也顺手把角色气质直接带进世界里。', 'DeepSeek and Flower Elf portraits are now available as placeable paintings, along with new placeable Deepseek Doll and Flower Elf Doll. They\'re perfect for finishing touches on your base and bringing the characters\' presence directly into the world.'],
   ['DeepSeek 肖像画', 'DeepSeek Portrait'],
@@ -3602,8 +3717,6 @@ const I18N_DATA = new Map([
   ['工具功能边界', 'Tool Feature Boundaries'],
   ['回声鲸的行为节奏', 'Echo Whale Behavior Rhythms'],
   ['填写 Key 与接口配置', 'API Key & Connection Config'],
-  ['聊天、查 Wiki 和部分联动功能需要先在模组配置里填写 DeepSeek API Key，并确认接口地址等基础信息。', 'Chat, Wiki lookup, and some linked features require filling in your DeepSeek API Key in mod config and confirming the API base URL.'],
-  ['配置完成后再进世界测试连接，避免因为空 Key、接口地址或网络问题导致 NPC 无法回复。', 'After configuring, test the connection in-world to avoid NPC unresponsiveness due to empty keys, wrong URLs, or network issues.'],
   // --- Manual Overlay Header ---
   ['包含介绍、使用流程、配置速查和常见问题。', 'Includes introduction, usage flow, config quick reference, and FAQ.'],
   ['关闭使用说明', 'Close Manual'],
@@ -3626,7 +3739,6 @@ const I18N_DATA = new Map([
   ['花精灵城镇宠物', 'Flower Elf Town Pet'],
   ['抚摸互动、工具管理、24 格收获袋、引领玩家划定草药园、收割并补种成熟或开花草药。', 'Petting interaction, tool management, 24-slot harvest bag, leading player to designate herb gardens, harvesting and replanting mature or blooming herbs.'],
   ['回声鲸宠物/坐骑', 'Echo Whale Pet/Mount'],
-  ['小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板。', 'Summoned with Dried Fish; picks up drops as a pet, left-click to ride with tile-passing movement, right-click to open mining/fishing task panel.'],
   ['工具与辅助', 'Tools & Assistants'],
   ['物品浏览器、地图右键传送、目标重铸、肖像画、Deepseek玩偶、花精灵人偶、鼠标皮肤、Boss 指示、胜利称赞和辅助攻击 HUD。', 'Item browser, map right-click teleport, targeted reforging, portraits, Deepseek Doll, Flower Elf Doll, mouse cursor skin, boss pointers, victory praise, and combat assist HUD.'],
   ['第一次使用重点看"初次使用""聊天界面"和"配置速查"。', 'First-time users: focus on "Getting Started," "Chat Interface," and "Config Quick Reference."'],
@@ -3639,7 +3751,7 @@ const I18N_DATA = new Map([
   ['能做什么', 'What It Does'],
   ['边界', 'Boundaries'],
   ['DeepSeek 城镇 NPC', 'DeepSeek Town NPC'],
-  ['单人世界中自动尝试出现，名为"人工智能"；可入住城镇，提供人物设定、连接检查、聊天、查 Wiki、快乐度按钮和自动召唤剑。', 'Auto-spawns in single-player worlds as "AI"; can move into towns, provides persona settings, connection check, chat, Wiki lookup, happiness button, and auto-sword.'],
+  ['单人世界中自动尝试出现，简中显示名为"人工智能"、英文显示名为"Artificial Intelligence"，固定名字为"DeepSeek"；这些名称指同一个 NPC。可入住城镇，提供人物设定、连接检查、聊天、查 Wiki、快乐度按钮和自动召唤剑。', 'Auto-spawns in single-player worlds. Its Simplified Chinese display name is "人工智能," its English display name is "Artificial Intelligence," and its fixed given name is "DeepSeek"; all of these names refer to the same NPC. She can move into towns and provides persona settings, connection check, chat, Wiki lookup, happiness button, and auto-sword.'],
   ['对话功能面向单人体验；她不会作为可击杀目标，也不会替玩家执行世界操作。', 'Dialogue is designed for single-player experience; she is not a killable target and does not perform world operations for the player.'],
   ['闲聊', 'Casual Chat'],
   ['使用人物设定、近期对话、长期记忆、关系印象和场景观察，像同伴一样回应玩家。', 'Uses persona settings, recent dialogue, long-term memory, relationship impressions, and scene observation to respond like a companion.'],
@@ -3655,30 +3767,23 @@ const I18N_DATA = new Map([
   ['仍按原版价格消耗钱币；不能给当前物品不支持的词缀。', 'Still consumes coins at vanilla prices; cannot apply modifiers unsupported by the current item.'],
   ['战斗辅助', 'Combat Assist'],
   ['单人模式下可显示按钮或用"切换辅助攻击"快捷键开启，自动锁定并用当前武器攻击附近敌怪。', 'In single-player, shows a button or use the "Toggle Combat Assist" hotkey to enable auto-targeting and attacking nearby enemies with your current weapon.'],
-  ['需要配置开启、人工智能已入住且连接成功；不会走位、换装、整理背包或修改世界。', 'Requires config enabled, AI housed, and successful connection; does not dodge, swap gear, organize inventory, or modify the world.'],
+  ['需要配置开启、人工智能已入住；不会走位、换装、整理背包或修改世界。', 'Requires config enabled and the AI companion housed; does not dodge, swap gear, organize inventory, or modify the world.'],
   // --- Manual Chapter 2: Getting Started ---
   ['进入单人世界后，模组会在玩家附近寻找安全地面生成"人工智能"城镇 NPC 和"花精灵"城镇宠物。两者都会尝试使用附近可用房屋；没有合适房屋时保持无家状态并继续等待条件，花精灵会像普通城镇 NPC 一样在附近行走，不会在无房状态执行飞行任务。', 'After entering a single-player world, the mod will search for safe ground near the player to spawn the "AI" town NPC and the "Flower Elf" town pet. Both will try to use nearby available houses; without suitable housing they remain homeless and continue waiting, and Flower Elf will walk around like a normal town NPC rather than performing flight tasks while homeless.'],
   ['基本步骤', 'Basic Steps'],
   ['安装并启用 Mod，进入单人世界。', 'Install and enable the mod, enter a single-player world.'],
-  ['打开模组配置，填写 DeepSeek API Key。API Base URL 默认是 https://api.deepseek.com。', 'Open mod config and fill in your DeepSeek API Key. The default API Base URL is https://api.deepseek.com.'],
   ['等待"人工智能"和"花精灵"在附近出现，并为她们准备可用房屋。', 'Wait for "AI" and "Flower Elf" to appear nearby, and prepare available houses for them.'],
   ['和"人工智能"对话，点击"检查连接"确认 API 可用，再进入聊天面板。', 'Talk to "AI," click "Check Connection" to confirm the API is working, then enter the chat panel.'],
   ['第一次与"人工智能"互动时，如果玩家身上和附近都没有"小鱼干"，她会给出回声鲸召唤物。', 'On first interaction with "AI," if the player and nearby area don\'t have a "Dried Fish," she will give you the Echo Whale summon item.'],
   ['使用"小鱼干"可召唤回声鲸，并获得"鲸歌回响"：慢落且免疫摔落伤害。', 'Use "Dried Fish" to summon Echo Whale and gain "Whale Song Echo": slow fall and immunity to fall damage.'],
   ['花精灵需要一把再生法杖或再生之斧，才能开始管理草药园。', 'Flower Elf needs a Staff of Regrowth or Regrowth Axe to begin managing herb gardens.'],
   ['Deepseek玩偶和花精灵人偶可在商人处购买，价格均为 25 金；放置后是发光家具，并计作房屋光源。', 'Deepseek Doll and Flower Elf Doll can be bought from the Merchant for 25 gold each; they are glowing furniture when placed and count as a house light source.'],
-  ['辅助攻击默认关闭；需要在配置中开启，且单人模式、人工智能已入住、连接成功后才会显示按钮或响应快捷键。', 'Combat assist is off by default; it must be enabled in config, and requires single-player mode, AI housed, and successful connection before the button or hotkey will respond.'],
+  ['辅助攻击默认关闭；需要在配置中开启，且单人模式、人工智能已入住后才会显示按钮或响应快捷键。', 'Combat assist is off by default; it must be enabled in config and requires single-player mode with the AI companion housed before the button or hotkey will respond.'],
   ['模型选择', 'Model Selection'],
   ['模型', 'Model'],
   ['特点', 'Characteristics'],
   ['建议场景', 'Recommended Use'],
-  ['DeepSeek V4 Flash', 'DeepSeek V4 Flash'],
-  ['回复更快，适合日常聊天。', 'Faster responses, suitable for daily chatting.'],
-  ['默认选择；普通闲聊、短问答、陪伴体验。', 'Default choice; casual chat, short Q&A, companionship experience.'],
-  ['DeepSeek V4 Pro', 'DeepSeek V4 Pro'],
-  ['更适合复杂问题和长回复。', 'Better suited for complex questions and longer responses.'],
-  ['复杂说明、长资料整理、需要更稳表达时使用。', 'Use for complex explanations, long info compilation, or when you need more stable expression.'],
-  ['连接异常时，先确认 API Key 没有多余空格，API Base URL 没被误改。网络较慢时可把回复等待时间调大。聊天面板中失败的回复可以重试，正在等待的回复可以取消。辅助攻击也会参考当前 API 设置的成功连接状态。', 'If connection is abnormal, first confirm the API Key has no extra spaces and the API Base URL hasn\'t been accidentally changed. On slow networks, increase the response timeout. Failed replies in the chat panel can be retried; pending replies can be cancelled. Combat assist also references the current API connection status.'],
+  ['DeepSeek Flash', 'DeepSeek Flash'],
   // --- Manual Chapter 3: Chat Interface ---
   ['聊天面板上方的"闲聊 / 查 Wiki"决定本次发送走哪套逻辑。两个模式有各自的对话记录，显示在同一个面板里，但不会混用记忆和资料依据；Wiki 对话会保留词条与数字高亮缓存，并可单独清空。', 'The "Chat / Wiki" toggle above the chat panel determines which logic this message uses. Each mode has its own conversation history, displayed in the same panel, but memory and data sources are never mixed; Wiki conversations retain term and number highlight caches and can be cleared separately.'],
   ['记忆', 'Memory'],
@@ -3730,13 +3835,10 @@ const I18N_DATA = new Map([
   ['任务中', 'On Task'],
   ['执行挖矿或钓鱼时不再做普通宠物跟随；可用召回按钮结束任务。', 'While performing mining or fishing tasks, no longer follows as a normal pet; use the recall button to end the task.'],
   // --- Manual Chapter 8: Echo Whale Mining ---
-  ['回声鲸挖矿需要玩家预先放好工具和目标物块，适合重复采集同类矿脉或资源块。它会优先在附近找目标，找不到再扩大范围。', 'Echo Whale mining requires the player to pre-place tools and target blocks — ideal for repeatedly harvesting the same ore veins or resource blocks. It prioritizes finding targets nearby, expanding the search range if not found.'],
   ['目标槽', 'Target Slot'],
-  ['放入要采掘的实体物块，回声鲸会寻找同类目标。', 'Place the solid block to be mined; Echo Whale will search for matching targets.'],
   ['背包', 'Backpack'],
   ['20 格任务背包，收纳采掘和钓鱼所得，可全部取出或整理。', '20-slot task backpack, stores mining and fishing gains; can withdraw all or sort.'],
   ['采掘上限', 'Mining Limit'],
-  ['默认单次最多 300 格，可在配置中调到 0 到 1000；设为 0 时不能派遣。', 'Default max 300 blocks per session; configurable from 0 to 1000. Setting to 0 disables dispatching.'],
   // --- Manual Chapter 9: Echo Whale Fishing ---
   ['回声鲸的钓鱼强度不取决于玩家装备加成，而是使用固定的高强度。玩家只需要给它鱼竿和可用鱼饵，然后选择水域。', 'Echo Whale\'s fishing power doesn\'t depend on player equipment bonuses — it uses a fixed high power. The player only needs to give it a fishing rod and usable bait, then select a body of water.'],
   ['背包空间', 'Backpack Space'],
@@ -3760,9 +3862,6 @@ const I18N_DATA = new Map([
   ['API Key', 'API Key'],
   ['连接 DeepSeek API 的密钥。', 'Key for connecting to the DeepSeek API.'],
   ['只在本机配置，不写入聊天内容。', 'Only configured locally; not written into chat content.'],
-  ['API Base URL', 'API Base URL'],
-  ['DeepSeek 接口地址。', 'DeepSeek API endpoint address.'],
-  ['默认保持 https://api.deepseek.com。', 'Keep the default https://api.deepseek.com.'],
   ['危险操作，清空已载入玩家的聊天、摘要、关系画像和长期记忆。', 'Dangerous operation; clears chat, summaries, relationship profiles, and long-term memory for loaded players.'],
   ['只在确实要重置所有关系时使用。', 'Only use when you truly want to reset all relationships.'],
   ['聊天面板保留显示', 'Chat Panel Display Count'],
@@ -3772,13 +3871,11 @@ const I18N_DATA = new Map([
   ['可开启右键拖动，并配置 X/Y 坐标。', 'Can enable right-click drag and configure X/Y coordinates.'],
   ['按钮挡 UI 时开启拖动。', 'Enable drag when the button blocks UI.'],
   ['回声鲸单次采掘上限', 'Echo Whale Mining Limit'],
-  ['范围 0 到 1000，默认 300。', 'Range 0 to 1000, default 300.'],
   ['设为 0 会禁用派遣采掘。', 'Setting to 0 disables mining dispatch.'],
   ['辅助攻击按钮', 'Combat Assist Button'],
   ['这个 Mod 按单人体验设计。对话记忆、宠物任务、花精灵草药园、回声鲸背包和辅助攻击都以本地玩家为核心，不面向多人同步规则。', 'This mod is designed for single-player experience. Dialogue memory, pet tasks, Flower Elf herb gardens, Echo Whale backpack, and combat assist all center on the local player and are not designed for multiplayer sync rules.'],
   // --- Manual Chapter 12: FAQ ---
   ['聊天失败', 'Chat Failed'],
-  ['检查 API Key、Base URL、网络状态和等待时间。可在聊天面板中重试。', 'Check API Key, Base URL, network status, and timeout. You can retry in the chat panel.'],
   ['Wiki 没查到', 'Wiki Not Found'],
   ['换成更具体的物品名，或加上"配方""掉落""用途""Boss""钓鱼"等关键词。', 'Try a more specific item name, or add keywords like "recipe," "drop," "use," "boss," "fishing."'],
   ['记忆想全部重来', 'Want to Reset All Memory'],
@@ -3788,7 +3885,6 @@ const I18N_DATA = new Map([
   ['花精灵不收割', 'Flower Elf Not Harvesting'],
   ['确认工具槽有再生法杖或再生之斧，草药园已划定，区域里有成熟草药，收获袋有空间。', 'Confirm the tool slot has a Staff of Regrowth or Regrowth Axe, herb garden zones are designated, there are mature herbs in the area, and the harvest bag has space.'],
   ['回声鲸不能挖', 'Echo Whale Can\'t Mine'],
-  ['确认放入镐子或钻头、目标是实体物块、工具强度足够，且采掘上限没有设为 0。', 'Confirm a pickaxe or drill is placed, the target is a solid block, tool power is sufficient, and the mining limit is not set to 0.'],
   ['花精灵不补种', 'Flower Elf Not Replanting'],
   ['她只会在成功收割成熟或开花草药后，把同一种草药补回原位；空地、空盆或被破坏的种植位置需要玩家手动处理。', 'She only replants the same herb type back in place after successfully harvesting mature or blooming herbs; empty spaces, empty pots, or destroyed planting spots need manual player handling.'],
   ['回声鲸不能钓熔岩', 'Echo Whale Can\'t Lava Fish'],
@@ -3798,7 +3894,7 @@ const I18N_DATA = new Map([
   ['背包空间不足', 'Not Enough Backpack Space'],
   ['回声鲸钓鱼前至少需要 10 个鲸鱼背包空位；采掘或花精灵收获袋满了则需要取出或整理。', 'Echo Whale needs at least 10 empty backpack slots before fishing; if mining storage or Flower Elf harvest bag is full, withdraw or sort items.'],
   ['辅助攻击按钮不出现', 'Combat Assist Button Not Showing'],
-  ['确认配置已开启、单人模式、人工智能已入住、有成功连接记录，且玩家没有打开地图或背包。', 'Confirm config is enabled, single-player mode, AI is housed, there is a successful connection record, and the player hasn\'t opened the map or inventory.'],
+  ['确认配置已开启、单人模式、人工智能已入住，且玩家没有打开地图或背包。', 'Confirm config is enabled, the game is in single-player mode, the AI companion is housed, and the player hasn\'t opened the map or inventory.'],
   ['DeepSeek 的剑不出现', 'DeepSeek\'s Sword Not Appearing'],
   ['确认人工智能附近约 90×90 格的搜索框内（每个方向约 45 格）有可攻击敌怪；同一名 DeepSeek 只会维持一把剑，没有目标时会自动收回。', 'Confirm there are attackable enemies within an approximately 90×90-tile search box centered on the AI (about 45 tiles in each direction); each DeepSeek maintains only one sword, which retracts when no target is present.'],
   ['DeepSeek 闲聊不是 Wiki；花精灵管理的是已建好的草药园；回声鲸挖矿需要目标物块和足够工具强度；回声鲸钓鱼环境在确认时锁定；战斗辅助是辅助工具，不保证替玩家完成战斗。', 'DeepSeek chat is not a Wiki; Flower Elf manages existing herb gardens; Echo Whale mining needs target blocks and sufficient tool power; Echo Whale fishing environment is locked on confirm; combat assist is a helper tool and doesn\'t guarantee winning fights for the player.'],
@@ -3954,8 +4050,6 @@ const I18N_EXTRA_DATA = new Map([
   [`上一条回复失败时重新尝试同一个问题。`, `Try the same question again after the previous reply fails.`],
   [`重新生成`, `Regenerate`],
   [`对上一条可重生成的问题再答一次。`, `Answer the previous regeneratable question again.`],
-  [`模型切换`, `Model Switch`],
-  [`Flash / Pro 的切换只影响之后的新回复。`, `Switching Flash / Pro only affects new replies after the switch.`],
   [`滚动聊天记录`, `Scroll Chat History`],
   [`使用滚轮、滚动条或按住右键拖动浏览较长记录；左键拖动用于选择文字。`, `Use the mouse wheel, scrollbar, or right-button drag to browse longer history; left-button drag selects text.`],
   [`选择与复制历史文字`, `Select & Copy History Text`],
@@ -4042,7 +4136,6 @@ const I18N_EXTRA_DATA = new Map([
   [`续采`, `Resume Mining`],
   [`因背包将满而暂停后，清理空间即可继续。`, `If paused because the backpack is nearly full, clear space to continue.`],
   [`搜索`, `Search`],
-  [`优先搜索附近矿脉，找不到再扩展到全图搜索。`, `Searches nearby veins first, then expands to a full-map search if none are found.`],
   [`流程`, `Flow`],
   [`准备`, `Prepare`],
   [`UI 左侧放鱼竿，右侧放可用鱼饵。松露虫等会召唤 Boss 的鱼饵不能放入。`, `Place the fishing rod on the left side of the UI and usable bait on the right. Boss-summoning bait such as Truffle Worms cannot be inserted.`],
@@ -4136,6 +4229,57 @@ const I18N_EXTRA_DATA = new Map([
   [`肖像画能当光源吗`, `Can Portraits Count as Lights?`],
   [`两幅肖像画会在弱光下保持明亮显示，但不算房屋光源；需要房屋光源时放 Deepseek玩偶或花精灵人偶。`, `Both portraits stay bright in low light, but they do not count as house light sources. Use the Deepseek Doll or Flower Elf Doll when you need a house light source.`],
   [`这个 Mod 的重点是单人世界中的陪伴、资料和轻量托管。它不追求多人同步，不替玩家完整托管战斗，也不把 NPC 做成无限制世界编辑器。`, `The focus of this mod is companionship, information, and light delegation in a single-player world. It does not pursue multiplayer sync, does not fully automate combat for the player, and does not turn NPCs into unrestricted world editors.`],
+  // --- Echo Whale region crew & 2.1 refresh ---
+  [`一个围绕玩家展开的单人陪伴型 Terraria 模组。DeepSeek 负责聊天、记忆、离线 Wiki、自动召唤剑和战斗联动，花精灵负责药草园，回声鲸负责分区采掘、钓鱼与捡物，把陪伴感和工具感真正捏在一起。`, `A single-player companion Terraria mod built around the player. DeepSeek handles chat, memory, offline Wiki, auto-sword, and combat integration. Flower Elf manages herb gardens. Echo Whale handles region-based mining, fishing, and item pickup — weaving companionship and utility together.`],
+  [`派遣挖矿时是主鲸 + 3 只小鲸的四人小队，各自在一片 96×96 格作业区里采集，飞过的地方还会点亮小地图。`, `When dispatched to mine, the main whale and three helpers form a four-whale crew, each working its own 96×96-tile region; their flight also lights up the minimap.`],
+  [`右键回声鲸开界面：挖矿放镐子或钻头和目标物块，钓鱼放鱼竿和鱼饵。派遣挖矿时，主鲸会带三只小鲸分成四片作业区同时采集；需要挖矿、钓鱼、收掉落物时，它会成为最有“陪你一起做事”感觉的那个伙伴。`, `Right-click Echo Whale to open its UI: for mining, place a pickaxe/drill and target blocks; for fishing, place a rod and bait. When dispatched to mine, the main whale leads three helpers across four separate work regions; when you need mining, fishing, or item pickup, it becomes the companion that most feels like "doing things together."`],
+  [`派遣挖矿时，主鲸会和 3 只小鲸分成四片 96×96 格作业区各自采集，挖空后换下一片，不会挤在同一片矿区；飞行途中还会点亮周围小地图。`, `When mining, the main whale and three helpers split into four 96×96-tile work regions; when a region runs dry they move to the next one instead of crowding the same spot, and their flight lights up the surrounding minimap.`],
+  [`小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板；挖矿时主鲸带 3 只小鲸分区采集。`, `Summoned with Dried Fish; the pet picks up drops, left-click mounts and phases through blocks, right-click opens the mining/fishing task panel; when mining, the main whale leads three helpers across separate regions.`],
+  [`回声鲸挖矿需要玩家预先放好工具和目标物块。派遣后是主鲸 + 3 只小鲸的四人小队，各自租下一片 96×96 格作业区同时采集；区内挖空后会换到下一片，飞行和采掘途中还会点亮周围小地图。`, `Echo Whale mining requires the player to pre-place a tool and target blocks. Once dispatched, the main whale and three helpers form a four-whale crew; each leases its own 96×96-tile work region, and when a region is exhausted they move to the next one. Their flight and mining also light up the surrounding minimap.`],
+  [`放入要采掘的实体物块；生命水晶、各色宝石和琥珀也可以作为目标。`, `Place the solid block to mine; Life Crystals, gems, and Amber can also be used as targets.`],
+  [`默认单次最多 300 格，可在配置中调到 0 到 2000；设为 0 时不能派遣。`, `Default max 300 tiles per dispatch; configurable from 0 to 2000. Setting to 0 disables dispatching.`],
+  [`主鲸 + 3 只小鲸同时出动，共用同一个采掘上限。`, `The main whale and three helpers deploy together and share one mining quota.`],
+  [`每片 96×96 格，租约互斥并预留相邻一圈；四只鲸至少相隔两片区域，不会挤在一起。`, `Each region is 96×96 tiles; leases are exclusive with a one-region halo, so the four whales stay at least two regions apart and never crowd one spot.`],
+  [`每只鲸只在自己的作业区里找目标；区内采空后标记完成，就近换下一片有矿的区域。`, `Each whale only searches its own region; when the region is cleared it marks it done and leases the nearest region that still has ore.`],
+  [`飞行和采掘时按移动光源的方式点亮周围约 12 格小地图。`, `While flying and mining, lights up about a 12-tile radius of the minimap like a moving light source.`],
+  [`全图只剩不到四片有矿区时，空闲的鲸会加入队友的作业区协同采集。`, `When fewer than four ore-bearing regions remain, idle whales join a teammate's region and help out.`],
+  [`因背包放不下当前掉落物而暂停后，清理空间即可继续。`, `If mining pauses because the backpack cannot hold the current drop, clear some space and resume.`],
+  [`范围 0 到 2000，默认 300。`, `Range 0 to 2000, default 300.`],
+  [`确认放入镐子或钻头、目标是实体物块或生命水晶/宝石/琥珀这类特殊资源、工具强度足够，且采掘上限没有设为 0。`, `Confirm a pickaxe or drill is placed, the target is a solid block or a special resource such as a Life Crystal, gem, or Amber, tool power is sufficient, and the mining limit is not 0.`],
+  [`四只鲸为什么不在一起挖`, `Why Don't the Four Whales Mine Together?`],
+  [`挖矿是分区作业：每只鲸只在自己租下的 96×96 格区域里采集，四只鲸会分散到不同区域；一片采空后会自动换区。`, `Mining uses region leases: each whale mines only within its own 96×96-tile region, so the four whales spread across different areas; when a region is exhausted they automatically move on.`],
+  [`当前版本使用 DeepSeek Flash，API 标识为 deepseek-flash；回复更快，适合日常聊天。`, `The current version uses DeepSeek Flash (API model ID: deepseek-flash); it provides faster replies for everyday chat.`],
+  [`普通闲聊、短问答、陪伴体验。`, `Everyday chat, short Q&A, companion experience.`],
+  [`模型`, `Model`],
+  [`当前版本固定使用 DeepSeek Flash（API 标识：deepseek-flash）。`, `The current version uses DeepSeek Flash (API model ID: deepseek-flash).`],
+  [`四人小队`, `Four-Whale Crew`],
+  [`作业区`, `Work Region`],
+  [`搜索与换区`, `Search & Relocation`],
+  [`地图点亮`, `Map Reveal`],
+  [`兜底`, `Fallback`],
+  [`Boss 指示负责把战斗目标更明确地抬出来，胜利称赞则把打完后的情绪收束补齐。`, `Boss pointers make combat targets clearer, while victory praise completes the emotional beat after the fight.`],
+  [`不发送闲聊历史;也不会乱补。`, `Doesn't send casual chat history; won't make things up.`],
+  [`中文`, `Chinese`],
+  [`使用滚轮、鼠标左键拖动右侧滚动条来浏览较长的聊天记录。`, `Use the mouse wheel or drag the right scrollbar with the left mouse button to browse longer chat history.`],
+  [`只保留自然口吻，不让人设自我发挥。`, `Keeps only a natural tone; the persona does not improvise facts.`],
+  [`可以查看“她对你的看法”。`, `You can view "how she sees you."`],
+  [`可进行记忆管理`, `Open memory management.`],
+  [`在聊天记录中按住鼠标左键拖动选择文字（按 Ctrl+C可复制选中内容）。`, `Hold the left mouse button and drag in chat history to select text (press Ctrl+C to copy the selection).`],
+  [`对上一条回复的内容或回答失败再重新生成一次。`, `Regenerate the previous reply or retry a failed answer.`],
+  [`清空记忆`, `Clear Memory`],
+  [`清除当前世界中这个 NPC 所有的聊天历史、摘要、长期记忆和关系画像。`, `Clears all chat history, summaries, long-term memory, and relationship profile for this NPC in the current world.`],
+  [`点击左上角头像`, `Click the Avatar in the Top-Left Corner`],
+  [`物品浏览器负责搜索、分类、排序和快速查看，适合测试、查物品和整理思路。`, `The item browser supports searching, categorizing, sorting, and quick viewing — useful for testing, looking up items, and organizing ideas.`],
+  [`让ai代入角色，进行角色扮演`, `Let the AI role-play the character`],
+  [`重铸时可以直接选择目标词缀，并自动持续重铸直到命中。`, `Choose a target modifier in the reforge UI and automatically keep reforging until it hits.`],
+  [`聊天、查 Wiki 和部分联动功能需要先在模组配置里填写 DeepSeek API Key，并保持网络畅通。`, `Chat, Wiki lookup, and some linked features require filling in your DeepSeek API Key in mod config and keeping the network available.`],
+  [`配置完成后再进世界测试连接，避免因为空 Key 或网络问题导致 NPC 无法回复。`, `After configuring, test the connection in-world to avoid NPC unresponsiveness due to an empty key or network issues.`],
+  [`打开模组配置，填写 DeepSeek API Key。接口地址固定为 https://api.deepseek.com，无需手动填写。`, `Open mod config and fill in your DeepSeek API Key. The endpoint is fixed at https://api.deepseek.com and does not need to be entered manually.`],
+  [`连接异常时，先确认 API Key 没有多余空格，并检查网络是否可用。网络较慢时可把回复等待时间调大。聊天面板中失败的回复可以重试，正在等待的回复可以取消。`, `If the connection fails, first confirm the API Key has no extra spaces and check that the network is available. On slow networks, increase the response timeout. Failed replies in the chat panel can be retried; pending replies can be cancelled.`],
+  [`接口地址`, `API Endpoint`],
+  [`固定为 https://api.deepseek.com。`, `Fixed at https://api.deepseek.com.`],
+  [`不需要手动填写。`, `No manual entry needed.`],
+  [`检查 API Key、网络状态和等待时间。可在聊天面板中重试。`, `Check the API Key, network status, and timeout. You can retry in the chat panel.`],
 ]);
 
 I18N_EXTRA_DATA.forEach((value, key) => {
