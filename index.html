@@ -3028,6 +3028,7 @@ body::before {
                 <li>右键打开功能 UI，空闲且没有 Boss 时左键可骑乘。</li>
                 <li data-i18n="roles.whale.f2">支持目标物块采掘、定点钓鱼和背包收纳，把工具使用感做成伙伴行为。</li>
                 <li>派遣挖矿时是主鲸 + 3 只小鲸的四人小队，各自在一片 96×96 格作业区里采集，飞过的地方还会点亮小地图。</li>
+                <li>挖矿或钓鱼时，会额外留一只小鲸在玩家身边帮忙捡掉落物；它不参与任务，也不能骑乘。</li>
                 <li>会自动吸附附近掉落物，并集中叼住后统一送回玩家（骑乘时也会触发吸附功能）。</li>
                 <li>拾取节奏覆盖普通物品，也照顾到心、魔力星等即时拾取物，整体体验更顺。</li>
               </ul>
@@ -3190,6 +3191,8 @@ body::before {
             <h3 data-i18n="notes.whale.name">回声鲸的行为节奏</h3>
             <p>回声鲸执行采掘或钓鱼任务时，不能同时当坐骑使用；Boss 在场时也不会载玩家。</p>
             <p>派遣挖矿时，主鲸会和 3 只小鲸分成四片 96×96 格作业区各自采集，挖空后换下一片，不会挤在同一片矿区；飞行途中还会点亮周围小地图。</p>
+            <p>挖矿或钓鱼时，还会额外留一只拾取小鲸在玩家身边，只负责跟随和捡掉落物，不参与采掘/钓鱼，也不能当坐骑。</p>
+            <p>任务结束或召回时，返程速度会随距离提高，靠近玩家或大鲸鱼后恢复正常。</p>
             <p>开始钓鱼前，鲸鱼背包至少需要 10 格空位。</p>
             <p>这让它更像一个真正正在忙的伙伴，而不是任何状态都能无限切换的万能按钮。</p>
           </article>
@@ -3238,7 +3241,7 @@ body::before {
               <div class="manual-row manual-table-head"><span>入口</span><span>核心用途</span></div>
               <div class="manual-row"><strong>人工智能城镇 NPC</strong><span>人物设定、闲聊、查 Wiki、长期记忆、关系印象、连接检查、快乐度说明和自动召唤剑。</span></div>
               <div class="manual-row"><strong>花精灵城镇宠物</strong><span>抚摸互动、工具管理、24 格收获袋、引领玩家划定草药园、收割并补种成熟或开花草药。</span></div>
-              <div class="manual-row"><strong>回声鲸宠物/坐骑</strong><span>小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板；挖矿时主鲸带 3 只小鲸分区采集。</span></div>
+              <div class="manual-row"><strong>回声鲸宠物/坐骑</strong><span>小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板；挖矿时主鲸带 3 只小鲸分区采集，任务期间身边还会留 1 只拾取小鲸。</span></div>
               <div class="manual-row"><strong>工具与辅助</strong><span>物品浏览器、地图右键传送、目标重铸、肖像画、Deepseek玩偶、花精灵人偶、鼠标皮肤、Boss 指示、胜利称赞和辅助攻击 HUD。</span></div>
             </div>
             <h4>阅读建议</h4>
@@ -3319,7 +3322,7 @@ body::before {
               <div class="manual-row manual-table-head"><span>项目</span><span>闲聊</span><span>查 Wiki</span></div>
               <div class="manual-row"><strong>主要用途</strong><span>陪伴、角色互动、自然聊天，也能解释本模组自身功能。</span><span>配方、掉落、概率、Boss、物品用途、装备数值等资料。</span></div>
               <div class="manual-row"><strong>人物设定</strong><span>让ai代入角色，进行角色扮演</span><span>只保留自然口吻，不让人设自我发挥。</span></div>
-              <div class="manual-row"><strong>聊天历史</strong><span>带入近期闲聊。</span><span>不发送闲聊历史;也不会乱补。</span></div>
+              <div class="manual-row"><strong>聊天历史</strong><span>带入近期闲聊。</span><span>不发送闲聊历史，也不做上下文衔接；每次提问独立处理。</span></div>
               <div class="manual-row"><strong>长期记忆</strong><span>使用并可能整理。</span><span>不使用，也不写入关系记忆。</span></div>
               <div class="manual-row"><strong>场景观察</strong><span>默认开启，只用于感知当下处境、氛围和角色反应，不当作资料库。</span><span>不使用闲聊场景来补事实；以离线 Wiki 命中资料为准。</span></div>
             </div>
@@ -3359,6 +3362,9 @@ body::before {
           <summary data-i18n="manual.ch5.title">5. 查 Wiki 模式</summary>
           <div class="manual-chapter-content">
             <p>查 Wiki 模式使用随 Mod 打包的离线资料索引。它优先命中结构化资料和专门模块，再组织成游戏内可读的回答；它不依赖玩家与 NPC 的闲聊记忆。</p>
+            <p>查 Wiki 完全在本地完成，不调用外部 API，断网也能使用。</p>
+            <p>查 Wiki 不做上下文衔接：每次提问独立处理，不接上一句；退出地图再进入时会清空 Wiki 对话。</p>
+            <p>口语化的说法（例如“咋拼出来”“打完给啥”）会由一个内置的本地小模型辅助判断该用哪个模块，不必刻意说规范词。</p>
             <div class="manual-table">
               <div class="manual-row manual-table-head"><span>主题</span><span>可以回答的内容</span></div>
               <div class="manual-row"><strong>配方与用途</strong><span>合成材料、制作站、用于哪些配方、装备合成链、微光转换等。</span></div>
@@ -3413,7 +3419,9 @@ body::before {
               <div class="manual-row"><strong>宠物</strong><span>跟随玩家，离玩家保持一定距离，拾取附近掉落物并带回玩家。小地图显示原版菱形提示。</span></div>
               <div class="manual-row"><strong>鲸歌回响</strong><span>小鱼干提供的宠物 Buff；存在时召唤回声鲸，并给玩家慢落与免疫摔落伤害。</span></div>
               <div class="manual-row"><strong>坐骑</strong><span>骑乘时可穿过物块，固定速度飞行，免疫摔落并保持呼吸；会像吸铁石一样吸附周围约 50 格内的掉落物。普通物品在玩家主背包已满时不再继续吸附，心和魔力星等即时拾取物照常生效；坐骑图标方向与小地图显示保持一致。</span></div>
-              <div class="manual-row"><strong>任务中</strong><span>执行挖矿或钓鱼时不再做普通宠物跟随；可用召回按钮结束任务。</span></div>
+              <div class="manual-row"><strong>任务中</strong><span>执行挖矿或钓鱼时，大鲸鱼不再做普通宠物跟随；可用召回按钮结束任务。</span></div>
+              <div class="manual-row"><strong>拾取小鲸</strong><span>挖矿或钓鱼时会额外生成 1 只小鲸留在玩家身边，只负责跟随和拾取掉落物；不能挖矿、钓鱼或骑乘。</span></div>
+              <div class="manual-row"><strong>返程</strong><span>任务结束或召回时，小鲸回大鲸、大鲸回玩家的速度会随距离提高，靠近后恢复正常。</span></div>
             </div>
           </div>
         </details>
@@ -3433,6 +3441,7 @@ body::before {
               <div class="manual-row"><strong>搜索与换区</strong><span>每只鲸只在自己的作业区里找目标；区内采空后标记完成，就近换下一片有矿的区域。</span></div>
               <div class="manual-row"><strong>地图点亮</strong><span>飞行和采掘时按移动光源的方式点亮周围约 12 格小地图。</span></div>
               <div class="manual-row"><strong>兜底</strong><span>全图只剩不到四片有矿区时，空闲的鲸会加入队友的作业区协同采集。</span></div>
+              <div class="manual-row"><strong>拾取小鲸</strong><span>任务期间额外有 1 只小鲸留在玩家身边捡掉落物，不参与采掘，也不占采掘上限。</span></div>
               <div class="manual-row"><strong>续采</strong><span>因背包放不下当前掉落物而暂停后，清理空间即可继续。</span></div>
             </div>
           </div>
@@ -3451,6 +3460,7 @@ body::before {
               <div class="manual-row"><strong>确认环境</strong><span>左键确认时，钓鱼环境按玩家当前位置固定；玩家之后移动不会改变这次任务的环境。</span></div>
               <div class="manual-row"><strong>任务鱼状态</strong><span>有渔夫、今日任务未完成且玩家/鲸鱼背包里还没有任务鱼时，面板会显示今日任务；当前环境或已锁定水域符合时会用绿色文字提示。</span></div>
               <div class="manual-row"><strong>开始钓鱼</strong><span>回声鲸飞到钓点附近持续钓鱼，渔获进入鲸鱼背包。</span></div>
+              <div class="manual-row"><strong>拾取小鲸</strong><span>钓鱼期间同样有 1 只小鲸留在玩家身边捡掉落物，不参与钓鱼，也不能骑乘。</span></div>
               <div class="manual-row"><strong>召回</strong><span>任务中可用召回按钮让回声鲸返回。</span></div>
             </div>
             <h4>渔获规则</h4>
@@ -3538,6 +3548,7 @@ body::before {
               <div class="manual-row"><strong>草药园最大范围</strong><span>框选矩形最多 6000 格，按宽度 x 高度计算；没有单独宽高上限，刚好 6000 格可确认，超过需要缩小。</span></div>
               <div class="manual-row"><strong>回声鲸不能挖</strong><span>确认放入镐子或钻头、目标是实体物块或生命水晶/宝石/琥珀这类特殊资源、工具强度足够，且采掘上限没有设为 0。</span></div>
               <div class="manual-row"><strong>四只鲸为什么不在一起挖</strong><span>挖矿是分区作业：每只鲸只在自己租下的 96×96 格区域里采集，四只鲸会分散到不同区域；一片采空后会自动换区。</span></div>
+              <div class="manual-row"><strong>任务时身边的小鲸鱼是什么</strong><span>那是拾取小鲸：挖矿或钓鱼期间额外留在玩家身边，只跟随并帮忙捡掉落物，不参与任务，也不能当坐骑。</span></div>
               <div class="manual-row"><strong>花精灵不补种</strong><span>她只会在成功收割成熟或开花草药后，把同一种草药补回原位；空地、空盆或被破坏的种植位置需要玩家手动处理。</span></div>
               <div class="manual-row"><strong>回声鲸不能钓熔岩</strong><span>需要具备熔岩钓鱼能力的鱼竿、熔岩鱼饵，或玩家饰品栏中已生效的防熔岩渔具袋、防熔岩钓钩等效果；选择的熔岩体也要达到最低液体格数。</span></div>
               <div class="manual-row"><strong>回声鲸钓不到某类鱼</strong><span>确认派遣时玩家所在环境和高度层。选择提示会显示已锁定环境，具体环境中也会混入对应高度通用渔获。</span></div>
@@ -3818,6 +3829,9 @@ const I18N_DATA = new Map([
   ['配置页中的危险操作，会清空已载入玩家保存的聊天记录、关系画像、摘要和长期记忆。', 'A dangerous operation in the config page; clears saved chat history, relationship profiles, summaries, and long-term memory for loaded players.'],
   // --- Manual Chapter 5: Wiki Mode ---
   ['查 Wiki 模式使用随 Mod 打包的离线资料索引。它优先命中结构化资料和专门模块，再组织成游戏内可读的回答；它不依赖玩家与 NPC 的闲聊记忆。', 'Wiki mode uses an offline data index bundled with the mod. It prioritizes hitting structured data and specialized modules, then organizes them into readable in-game answers; it does not rely on player-NPC chat memory.'],
+  ['查 Wiki 完全在本地完成，不调用外部 API，断网也能使用。', 'Wiki lookup runs entirely offline and never calls an external API, so it works without an internet connection.'],
+  ['查 Wiki 不做上下文衔接：每次提问独立处理，不接上一句；退出地图再进入时会清空 Wiki 对话。', 'Wiki lookup keeps no context: every question stands on its own, follow-ups are not carried over, and the Wiki conversation is cleared when you re-enter a world.'],
+  ['口语化的说法（例如“咋拼出来”“打完给啥”）会由一个内置的本地小模型辅助判断该用哪个模块，不必刻意说规范词。', 'A small built-in local model helps route colloquial phrasings (for example "how do I put it together" or "what does it give after the fight") to the right module, so you do not have to phrase questions formally.'],
   ['获取来源', 'Acquisition Sources'],
   ['掉落来源、售卖、宝箱、任务奖励、钓鱼来源，以及没有掉落表/配方时的获取方式兜底。', 'Drop sources, vendors, chests, quest rewards, fishing sources, and fallback acquisition methods when no drop table or recipe exists.'],
   ['宠物、坐骑、钓鱼', 'Pets, Mounts, Fishing'],
@@ -4258,7 +4272,7 @@ const I18N_EXTRA_DATA = new Map([
   [`地图点亮`, `Map Reveal`],
   [`兜底`, `Fallback`],
   [`Boss 指示负责把战斗目标更明确地抬出来，胜利称赞则把打完后的情绪收束补齐。`, `Boss pointers make combat targets clearer, while victory praise completes the emotional beat after the fight.`],
-  [`不发送闲聊历史;也不会乱补。`, `Doesn't send casual chat history; won't make things up.`],
+  [`不发送闲聊历史，也不做上下文衔接；每次提问独立处理。`, `Doesn't send chat history or carry any context; every question is handled on its own.`],
   [`中文`, `Chinese`],
   [`使用滚轮、鼠标左键拖动右侧滚动条来浏览较长的聊天记录。`, `Use the mouse wheel or drag the right scrollbar with the left mouse button to browse longer chat history.`],
   [`只保留自然口吻，不让人设自我发挥。`, `Keeps only a natural tone; the persona does not improvise facts.`],
@@ -4280,6 +4294,19 @@ const I18N_EXTRA_DATA = new Map([
   [`固定为 https://api.deepseek.com。`, `Fixed at https://api.deepseek.com.`],
   [`不需要手动填写。`, `No manual entry needed.`],
   [`检查 API Key、网络状态和等待时间。可在聊天面板中重试。`, `Check the API Key, network status, and timeout. You can retry in the chat panel.`],
+  [`挖矿或钓鱼时，会额外留一只小鲸在玩家身边帮忙捡掉落物；它不参与任务，也不能骑乘。`, `During mining or fishing, an extra small whale stays by the player to help collect drops; it does not join the task and cannot be mounted.`],
+  [`挖矿或钓鱼时，还会额外留一只拾取小鲸在玩家身边，只负责跟随和捡掉落物，不参与采掘/钓鱼，也不能当坐骑。`, `During mining or fishing, an extra pickup whale stays near the player. It only follows and collects drops — it never mines, fishes, or acts as a mount.`],
+  [`任务结束或召回时，返程速度会随距离提高，靠近玩家或大鲸鱼后恢复正常。`, `When a task ends or the whale is recalled, the trip home speeds up with distance and eases back to normal as it reaches the player or the main whale.`],
+  [`执行挖矿或钓鱼时，大鲸鱼不再做普通宠物跟随；可用召回按钮结束任务。`, `While mining or fishing, the main whale stops following as a normal pet; use the recall button to end the task.`],
+  [`挖矿或钓鱼时会额外生成 1 只小鲸留在玩家身边，只负责跟随和拾取掉落物；不能挖矿、钓鱼或骑乘。`, `While mining or fishing, one extra small whale stays near the player. It only follows and picks up drops; it cannot mine, fish, or be mounted.`],
+  [`任务结束或召回时，小鲸回大鲸、大鲸回玩家的速度会随距离提高，靠近后恢复正常。`, `When a task ends or the whale is recalled, helpers returning to the main whale and the main whale returning to the player speed up with distance and ease back to normal on arrival.`],
+  [`任务期间额外有 1 只小鲸留在玩家身边捡掉落物，不参与采掘，也不占采掘上限。`, `An extra small whale stays by the player during the task to collect drops; it does not mine and does not count toward the mining quota.`],
+  [`钓鱼期间同样有 1 只小鲸留在玩家身边捡掉落物，不参与钓鱼，也不能骑乘。`, `During fishing, one extra small whale also stays by the player to collect drops; it does not fish and cannot be mounted.`],
+  [`任务时身边的小鲸鱼是什么`, `What Is the Small Whale Near Me During Tasks?`],
+  [`那是拾取小鲸：挖矿或钓鱼期间额外留在玩家身边，只跟随并帮忙捡掉落物，不参与任务，也不能当坐骑。`, `That is the pickup whale: during mining or fishing it stays near the player, follows and collects drops, does not join the task, and cannot be mounted.`],
+  [`小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板；挖矿时主鲸带 3 只小鲸分区采集，任务期间身边还会留 1 只拾取小鲸。`, `Summoned with Dried Fish; the pet picks up drops, left-click mounts and phases through blocks, right-click opens the mining/fishing task panel; when mining, the main whale leads three helpers across separate regions, and an extra pickup whale stays by the player during tasks.`],
+  [`拾取小鲸`, `Pickup Whale`],
+  [`返程`, `Return Trip`],
 ]);
 
 I18N_EXTRA_DATA.forEach((value, key) => {
