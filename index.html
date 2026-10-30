@@ -3108,7 +3108,7 @@ body::before {
           <article class="step-card">
             <div class="step-number">02</div>
             <h3 data-i18n="quickstart.elf.name">再把花精灵接到药草园</h3>
-            <p>给她再生法杖或再生之斧，然后通过引导与划区，把草药园交给她照看。这个系统更适合长期挂着跑，而不是一次性点完就忘。</p>
+            <p>给她再生法杖或再生之斧，然后通过引导与划区，把草药园交给她照看。她一开始工作，就会放出蓝、绿、粉三只小仙灵分头采摘补种。这个系统更适合长期挂着跑，而不是一次性点完就忘。</p>
           </article>
 
           <article class="step-card">
@@ -3240,7 +3240,7 @@ body::before {
             <div class="manual-table">
               <div class="manual-row manual-table-head"><span>入口</span><span>核心用途</span></div>
               <div class="manual-row"><strong>人工智能城镇 NPC</strong><span>人物设定、闲聊、查 Wiki、长期记忆、关系印象、连接检查、快乐度说明和自动召唤剑。</span></div>
-              <div class="manual-row"><strong>花精灵城镇宠物</strong><span>抚摸互动、工具管理、24 格收获袋、引领玩家划定草药园、收割并补种成熟或开花草药。</span></div>
+              <div class="manual-row"><strong>花精灵城镇宠物</strong><span>抚摸互动、工具管理、24 格收获袋、引领玩家划定草药园、收割并补种成熟或开花草药；管理草药园时会放出三只小仙灵分头帮工。</span></div>
               <div class="manual-row"><strong>回声鲸宠物/坐骑</strong><span>小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板；挖矿时主鲸带 3 只小鲸分区采集，任务期间身边还会留 1 只拾取小鲸。</span></div>
               <div class="manual-row"><strong>工具与辅助</strong><span>物品浏览器、地图右键传送、目标重铸、肖像画、Deepseek玩偶、花精灵人偶、鼠标皮肤、Boss 指示、胜利称赞和辅助攻击 HUD。</span></div>
             </div>
@@ -3387,7 +3387,8 @@ body::before {
             <div class="manual-table">
               <div class="manual-row manual-table-head"><span>功能</span><span>说明</span></div>
               <div class="manual-row"><strong>抚摸</strong><span>对话按钮中可以抚摸花精灵，会有文字与粒子反馈。</span></div>
-              <div class="manual-row"><strong>工具管理</strong><span>单槽 UI，放入或取出再生法杖、再生之斧。只要槽内有可用工具，她就能管理草药园。</span></div>
+              <div class="manual-row"><strong>工具管理</strong><span>单槽 UI，放入或取出再生法杖、再生之斧。只要槽内有可用工具，她就能管理草药园。她正在工作（引领或管理草药园）时这个按钮会隐藏，想换工具先暂停或结束任务。</span></div>
+              <div class="manual-row"><strong>仙灵帮手</strong><span>管理草药园期间会放出蓝、绿、粉三只小仙灵分头干活。每只仙灵只在自己那片区域巡视，认领一株成熟草药后立刻采下并补种，再去找下一株；收获同样进入她的收获袋。</span></div>
               <div class="manual-row"><strong>收获袋</strong><span>24 格收纳空间；成熟草药、种子和相关收获会先进入她的收获袋，玩家可以全部取出或整理。</span></div>
               <div class="manual-row"><strong>没有有效房屋时</strong><span>她会暂停工具、引领和草药园相关工作，改用普通城镇 NPC 的地面闲逛逻辑，直到重新拥有可用房屋。</span></div>
               <div class="manual-row"><strong>引领</strong><span>点击引领后她会跟随玩家，到目的地后可框选草药园。</span></div>
@@ -3402,10 +3403,11 @@ body::before {
               <li>她会飞到草药附近再收割，不是站在原地隔空清空整片区域。</li>
               <li>每次收割会产生 1 到 3 个对应种子，其中 1 个用于原位补种，剩余种子进入收获袋。</li>
               <li>她在哪个物块、花盆或种植盆收割了什么，就把同一种草药补回原处；空地和被破坏的种植位置需要玩家手动处理。</li>
-              <li>没有可收割目标时，她会在草药园区域内随机巡游，不固定停在一个小点。</li>
-              <li>任务中她可以穿墙飞行，避免被草药园附近物块卡住。</li>
+              <li>没有可收割目标时，她会在草药园区域内随机巡游，不固定停在一个小点；三只仙灵各自守着自己的一条区域，不会挤在一起。</li>
+              <li>她和仙灵不会抢同一株草药：谁先认领就由谁处理，其他方向会直接略过。</li>
+              <li>任务中她和仙灵都可以穿墙飞行，避免被草药园附近物块卡住。</li>
             </ul>
-            <div class="manual-note">花精灵不会凭空建设草药园，不会自动铺土、放盆、扩建房间或替玩家规划结构。她的能力集中在“已有草药园的维护”。</div>
+            <div class="manual-note">花精灵不会凭空建设草药园，不会自动铺土、放盆、扩建房间或替玩家规划结构。她的能力集中在“已有草药园的维护”。工具被取走时会先停手：已经把草药摘下来的会先补种回去；暂停、结束任务或收获袋满时，仙灵也会立刻消失。</div>
           </div>
         </details>
 
@@ -3418,7 +3420,7 @@ body::before {
               <div class="manual-row manual-table-head"><span>状态</span><span>行为</span></div>
               <div class="manual-row"><strong>宠物</strong><span>跟随玩家，离玩家保持一定距离，拾取附近掉落物并带回玩家。小地图显示原版菱形提示。</span></div>
               <div class="manual-row"><strong>鲸歌回响</strong><span>小鱼干提供的宠物 Buff；存在时召唤回声鲸，并给玩家慢落与免疫摔落伤害。</span></div>
-              <div class="manual-row"><strong>坐骑</strong><span>骑乘时可穿过物块，固定速度飞行，免疫摔落并保持呼吸；会像吸铁石一样吸附周围约 50 格内的掉落物。普通物品在玩家主背包已满时不再继续吸附，心和魔力星等即时拾取物照常生效；坐骑图标方向与小地图显示保持一致。</span></div>
+              <div class="manual-row"><strong>坐骑</strong><span>骑乘时可穿过物块，固定速度飞行，免疫摔落并保持呼吸；会像吸铁石一样吸附周围约 50 格内的掉落物。普通物品在玩家主背包已满时不再继续吸附，心和魔力星等即时拾取物照常生效；坐骑图标方向与小地图显示保持一致。挥砍武器时即使攻击方向与移动方向相反，鲸鱼也会保持移动方向的朝向，不会来回翻转。</span></div>
               <div class="manual-row"><strong>任务中</strong><span>执行挖矿或钓鱼时，大鲸鱼不再做普通宠物跟随；可用召回按钮结束任务。</span></div>
               <div class="manual-row"><strong>拾取小鲸</strong><span>挖矿或钓鱼时会额外生成 1 只小鲸留在玩家身边，只负责跟随和拾取掉落物；不能挖矿、钓鱼或骑乘。</span></div>
               <div class="manual-row"><strong>返程</strong><span>任务结束或召回时，小鲸回大鲸、大鲸回玩家的速度会随距离提高，靠近后恢复正常。</span></div>
@@ -3460,7 +3462,7 @@ body::before {
               <div class="manual-row"><strong>选择水域</strong><span>点击钓鱼后，用鼠标指向一片水、蜂蜜或熔岩附近。系统会识别鼠标所指液体连通的整片水体，而不是玩家手动画方框。</span></div>
               <div class="manual-row"><strong>确认环境</strong><span>左键确认时，钓鱼环境按玩家当前位置固定；玩家之后移动不会改变这次任务的环境。</span></div>
               <div class="manual-row"><strong>任务鱼状态</strong><span>有渔夫、今日任务未完成且玩家/鲸鱼背包里还没有任务鱼时，面板会显示今日任务；当前环境或已锁定水域符合时会用绿色文字提示。</span></div>
-              <div class="manual-row"><strong>开始钓鱼</strong><span>回声鲸飞到钓点附近持续钓鱼，渔获进入鲸鱼背包。</span></div>
+              <div class="manual-row"><strong>开始钓鱼</strong><span>回声鲸会沉到钓点水面下方持续钓鱼，只露出背部和背鳍，并随水波轻轻浮动；渔获进入鲸鱼背包。</span></div>
               <div class="manual-row"><strong>钓鱼速度</strong><span>默认 1.5 倍；可在配置里调到 0.5 到 2，数值越高，两次渔获之间的等待越短。</span></div>
               <div class="manual-row"><strong>拾取小鲸</strong><span>钓鱼期间同样有 1 只小鲸留在玩家身边捡掉落物，不参与钓鱼，也不能骑乘。</span></div>
               <div class="manual-row"><strong>召回</strong><span>任务中可用召回按钮让回声鲸返回。</span></div>
@@ -3475,6 +3477,7 @@ body::before {
               <li>除金蠕虫外，鱼饵每次约 15% 消耗；金蠕虫约 1/20 消耗。鱼饵用完后任务结束。</li>
               <li>血月不会钓出怪物。即使原版或 Hook 给出敌怪结果，回声鲸也会清掉怪物结果。</li>
               <li>蜂蜜和熔岩不会混入普通高度层鱼池。</li>
+              <li>钓点附近会有水面漂浮感：鲸鱼贴着实际水面下潜，水浅时也会尽量贴近水面，而不是悬在水面上方。</li>
             </ul>
             <h4>环境与高度层</h4>
             <div class="manual-table">
@@ -3548,6 +3551,8 @@ body::before {
               <div class="manual-row"><strong>人偶在哪里买</strong><span>Deepseek玩偶和花精灵人偶都由商人出售，价格均为 25 金；放置后是 5x6 发光家具，并计作房屋光源。</span></div>
               <div class="manual-row"><strong>目标重铸不开始</strong><span>确认物品可重铸、已经选择目标词缀、词缀适用于当前物品，并且钱币足够。</span></div>
               <div class="manual-row"><strong>花精灵不收割</strong><span>确认工具槽有再生法杖或再生之斧，草药园已划定，区域里有成熟草药，收获袋有空间。</span></div>
+              <div class="manual-row"><strong>三只仙灵没出现</strong><span>仙灵只在她真正工作时出现：确认草药园任务没有暂停或结束、工具还在槽里、收获袋没有满。补齐条件后它们会自动重新出现。</span></div>
+              <div class="manual-row"><strong>找不到工具管理按钮</strong><span>她正在引领或管理草药园时按钮会隐藏；先暂停或结束任务，按钮就会回来。</span></div>
               <div class="manual-row"><strong>草药园最大范围</strong><span>框选矩形最多 6000 格，按宽度 x 高度计算；没有单独宽高上限，刚好 6000 格可确认，超过需要缩小。</span></div>
               <div class="manual-row"><strong>回声鲸不能挖</strong><span>确认放入镐子或钻头、目标是实体物块或生命水晶/宝石/琥珀这类特殊资源、工具强度足够，且采掘上限没有设为 0。</span></div>
               <div class="manual-row"><strong>四只鲸为什么不在一起挖</strong><span>挖矿是分区作业：每只鲸只在自己租下的 96×96 格区域里采集，四只鲸会分散到不同区域；一片采空后会自动换区。</span></div>
@@ -3752,7 +3757,7 @@ const I18N_DATA = new Map([
   ['人工智能城镇 NPC', 'AI Town NPC'],
   ['人物设定、闲聊、查 Wiki、长期记忆、关系印象、连接检查、快乐度说明和自动召唤剑。', 'Persona settings, chatting, Wiki lookup, long-term memory, relationship impressions, connection check, happiness info, and auto-sword.'],
   ['花精灵城镇宠物', 'Flower Elf Town Pet'],
-  ['抚摸互动、工具管理、24 格收获袋、引领玩家划定草药园、收割并补种成熟或开花草药。', 'Petting interaction, tool management, 24-slot harvest bag, leading player to designate herb gardens, harvesting and replanting mature or blooming herbs.'],
+  [`抚摸互动、工具管理、24 格收获袋、引领玩家划定草药园、收割并补种成熟或开花草药；管理草药园时会放出三只小仙灵分头帮工。`, `Petting, tool management, a 24-slot harvest bag, leading the player to mark a herb garden, and harvesting then replanting mature or blooming herbs; while managing the garden she sends out three little fairies to help.`],
   ['回声鲸宠物/坐骑', 'Echo Whale Pet/Mount'],
   ['工具与辅助', 'Tools & Assistants'],
   ['物品浏览器、地图右键传送、目标重铸、肖像画、Deepseek玩偶、花精灵人偶、鼠标皮肤、Boss 指示、胜利称赞和辅助攻击 HUD。', 'Item browser, map right-click teleport, targeted reforging, portraits, Deepseek Doll, Flower Elf Doll, mouse cursor skin, boss pointers, victory praise, and combat assist HUD.'],
@@ -3866,7 +3871,7 @@ const I18N_DATA = new Map([
   ['确认环境', 'Confirm Environment'],
   ['左键确认时，钓鱼环境按玩家当前位置固定；玩家之后移动不会改变这次任务的环境。', 'On left-click confirm, the fishing environment is locked to the player\'s current position; later player movement won\'t change this task\'s environment.'],
   ['开始钓鱼', 'Start Fishing'],
-  ['回声鲸飞到钓点附近持续钓鱼，渔获进入鲸鱼背包。', 'Echo Whale flies near the fishing spot and fishes continuously; catches go into the whale backpack.'],
+  [`回声鲸会沉到钓点水面下方持续钓鱼，只露出背部和背鳍，并随水波轻轻浮动；渔获进入鲸鱼背包。`, `The Echo Whale settles just under the water surface at the fishing spot with only its back and dorsal fin showing, bobbing gently with the waves; catches go into the whale backpack.`],
   ['召回', 'Recall'],
   ['任务中可用召回按钮让回声鲸返回。', 'Use the recall button during a task to bring Echo Whale back.'],
   ['水域至少需要 75 格连通液体；可选择水、蜂蜜或熔岩。熔岩钓鱼需要具备熔岩钓鱼能力的鱼竿、熔岩鱼饵，或玩家饰品栏中已生效的防熔岩渔具袋、防熔岩钓钩等效果。', 'The water body needs at least 75 connected liquid tiles; you can choose water, honey, or lava. Lava fishing requires a lava-capable rod, lava bait, or active effects from the player\'s accessory slots such as Lavaproof Fishing Hook or Lavaproof Tackle Bag.'],
@@ -3902,6 +3907,10 @@ const I18N_DATA = new Map([
   ['Deepseek玩偶和花精灵人偶都由商人出售，价格均为 25 金；放置后是 5x6 发光家具，并计作房屋光源。', 'Deepseek Doll and Flower Elf Doll are both sold by the Merchant for 25 gold each; they are 5x6 glowing furniture when placed and count as house light sources.'],
   ['花精灵不收割', 'Flower Elf Not Harvesting'],
   ['确认工具槽有再生法杖或再生之斧，草药园已划定，区域里有成熟草药，收获袋有空间。', 'Confirm the tool slot has a Staff of Regrowth or Regrowth Axe, herb garden zones are designated, there are mature herbs in the area, and the harvest bag has space.'],
+  [`三只仙灵没出现`, `The three fairies are missing`],
+  [`仙灵只在她真正工作时出现：确认草药园任务没有暂停或结束、工具还在槽里、收获袋没有满。补齐条件后它们会自动重新出现。`, `Fairies only appear while she is really working: check that the garden task is not paused or ended, the tool is still in the slot, and the harvest bag is not full. They reappear automatically once those conditions are met.`],
+  [`找不到工具管理按钮`, `Can't find the tool management button`],
+  [`她正在引领或管理草药园时按钮会隐藏；先暂停或结束任务，按钮就会回来。`, `The button is hidden while she is leading or managing a garden; pause or end the task and it comes back.`],
   ['回声鲸不能挖', 'Echo Whale Can\'t Mine'],
   ['花精灵不补种', 'Flower Elf Not Replanting'],
   ['她只会在成功收割成熟或开花草药后，把同一种草药补回原位；空地、空盆或被破坏的种植位置需要玩家手动处理。', 'She only replants the same herb type back in place after successfully harvesting mature or blooming herbs; empty spaces, empty pots, or destroyed planting spots need manual player handling.'],
@@ -4026,7 +4035,7 @@ const I18N_EXTRA_DATA = new Map([
   [`<span class="inline-badge">强化界面</span>重铸时可以直接选择目标词缀，并自动持续重铸直到命中。`, `<span class="inline-badge">Upgrade UI</span> During reforging, you can directly choose a target modifier and automatically keep reforging until it hits.`],
   [`<span class="inline-badge">陪伴感</span>Boss 指示负责把战斗目标更明确地抬出来，胜利称赞则把打完后的情绪收束补齐。`, `<span class="inline-badge">Companion Feel</span> Boss pointers make combat targets clearer, while victory praise closes the fight with a bit of emotional follow-through.`],
   [`如果你第一次进这个 mod，最顺的打开方式不是乱点功能，而是按“对话 - 生活 - 采集”这个节奏去接。`, `For a first run, the smoothest approach is not clicking around randomly, but following a rhythm of conversation, daily life, then gathering.`],
-  [`给她再生法杖或再生之斧，然后通过引导与划区，把草药园交给她照看。这个系统更适合长期挂着跑，而不是一次性点完就忘。`, `Give her a Staff of Regrowth or Regrowth Axe, then use guiding and zoning to let her care for the herb garden. This system works best as a long-running routine, not a one-time click.`],
+  [`给她再生法杖或再生之斧，然后通过引导与划区，把草药园交给她照看。她一开始工作，就会放出蓝、绿、粉三只小仙灵分头采摘补种。这个系统更适合长期挂着跑，而不是一次性点完就忘。`, `Give her a Staff of Regrowth or Regrowth Axe, then use guiding and zoning to let her care for the herb garden. Once she starts working she sends out three little fairies — blue, green, and pink — to pick and replant in parallel. This system works best as a long-running routine, not a one-time click.`],
   [`50个丝绸 + 100木材，在织布机处合成`, `50 Silk + 100 Wood, crafted at a Loom`],
   [`可放置的发光玩偶，体积为 5x6 格，也会作为房屋光源计入需求。`, `A placeable glowing doll, 5x6 tiles in size, which also counts as a house light source.`],
   [`商人处购买，价格 25 金`, `Bought from the Merchant for 25 gold`],
@@ -4123,7 +4132,9 @@ const I18N_EXTRA_DATA = new Map([
   [`家具、墙、物块、光源、制作站等放置资料，以及“有哪些”“大全”“分类”类长列表。`, `Placeable data for furniture, walls, blocks, light sources, crafting stations, and long list queries such as "which ones," "complete list," and "categories."`],
   [`功能`, `Feature`],
   [`工具管理`, `Tool Management`],
-  [`单槽 UI，放入或取出再生法杖、再生之斧。只要槽内有可用工具，她就能管理草药园。`, `Single-slot UI for placing or removing a Staff of Regrowth or Regrowth Axe. As long as a usable tool is in the slot, she can manage herb gardens.`],
+  [`单槽 UI，放入或取出再生法杖、再生之斧。只要槽内有可用工具，她就能管理草药园。她正在工作（引领或管理草药园）时这个按钮会隐藏，想换工具先暂停或结束任务。`, `Single-slot UI for placing or removing a Staff of Regrowth or Regrowth Axe. As long as a usable tool is in the slot, she can manage herb gardens. The button is hidden while she is working (leading or managing a garden); pause or end the task first to swap tools.`],
+  [`仙灵帮手`, `Fairy Helpers`],
+  [`管理草药园期间会放出蓝、绿、粉三只小仙灵分头干活。每只仙灵只在自己那片区域巡视，认领一株成熟草药后立刻采下并补种，再去找下一株；收获同样进入她的收获袋。`, `While managing a garden she releases three little fairies (blue, green, pink) to work in parallel. Each fairy patrols only its own slice, claims a ripe herb, picks and replants it immediately, then moves on to the next. Their harvests also go into her harvest bag.`],
   [`收获袋`, `Harvest Bag`],
   [`24 格收纳空间；成熟草药、种子和相关收获会先进入她的收获袋，玩家可以全部取出或整理。`, `A 24-slot storage space; mature herbs, seeds, and related harvests enter her harvest bag first, and the player can withdraw all or sort them.`],
   [`没有有效房屋时`, `Without Valid Housing`],
@@ -4139,16 +4150,17 @@ const I18N_EXTRA_DATA = new Map([
   [`她会飞到草药附近再收割，不是站在原地隔空清空整片区域。`, `She flies near herbs before harvesting; she does not clear the entire area remotely from one spot.`],
   [`每次收割会产生 1 到 3 个对应种子，其中 1 个用于原位补种，剩余种子进入收获袋。`, `Each harvest produces 1 to 3 matching seeds; 1 is used for replanting in place, and the rest enter the harvest bag.`],
   [`她在哪个物块、花盆或种植盆收割了什么，就把同一种草药补回原处；空地和被破坏的种植位置需要玩家手动处理。`, `Whatever she harvests from a block, flower pot, or planter box, she replants the same herb there. Empty spaces and broken planting positions need manual handling by the player.`],
-  [`没有可收割目标时，她会在草药园区域内随机巡游，不固定停在一个小点。`, `When there is nothing to harvest, she randomly patrols inside the herb garden area instead of staying fixed at one point.`],
-  [`任务中她可以穿墙飞行，避免被草药园附近物块卡住。`, `During tasks, she can fly through tiles to avoid getting stuck near the herb garden.`],
-  [`花精灵不会凭空建设草药园，不会自动铺土、放盆、扩建房间或替玩家规划结构。她的能力集中在“已有草药园的维护”。`, `Flower Elf does not create herb gardens from nothing, place soil or pots, expand rooms, or plan structures for the player. Her ability is focused on maintaining existing herb gardens.`],
+  [`没有可收割目标时，她会在草药园区域内随机巡游，不固定停在一个小点；三只仙灵各自守着自己的一条区域，不会挤在一起。`, `When there is nothing to harvest, she randomly patrols inside the herb garden area instead of staying fixed at one point; the three fairies keep to their own lanes so they never bunch up.`],
+  [`她和仙灵不会抢同一株草药：谁先认领就由谁处理，其他方向会直接略过。`, `She and the fairies never contest the same herb: whoever claims it first handles it and the others skip it.`],
+  [`任务中她和仙灵都可以穿墙飞行，避免被草药园附近物块卡住。`, `While on task, she and the fairies can fly through walls so nearby blocks cannot trap them.`],
+  [`花精灵不会凭空建设草药园，不会自动铺土、放盆、扩建房间或替玩家规划结构。她的能力集中在“已有草药园的维护”。工具被取走时会先停手：已经把草药摘下来的会先补种回去；暂停、结束任务或收获袋满时，仙灵也会立刻消失。`, `The Flower Elf will not build a herb garden from nothing, will not place soil or pots, expand rooms, or plan structures for the player. Her abilities focus on maintaining an existing herb garden. If her tool is taken away she stops: a herb she already picked is replanted first, and the fairies vanish immediately when the task is paused, ended, or the harvest bag is full.`],
   [`状态行为`, `State Behavior`],
   [`状态`, `State`],
   [`行为`, `Behavior`],
   [`宠物`, `Pet`],
   [`跟随玩家，离玩家保持一定距离，拾取附近掉落物并带回玩家。小地图显示原版菱形提示。`, `Follows the player at a set distance, picks up nearby drops, and brings them back. The minimap shows the vanilla diamond marker.`],
   [`坐骑`, `Mount`],
-  [`骑乘时可穿过物块，固定速度飞行，免疫摔落并保持呼吸；会像吸铁石一样吸附周围约 50 格内的掉落物。普通物品在玩家主背包已满时不再继续吸附，心和魔力星等即时拾取物照常生效；坐骑图标方向与小地图显示保持一致。`, `While mounted, it can pass through tiles, flies at a fixed speed, prevents fall damage, and keeps breathing. It attracts drops within about 50 tiles like a magnet. Normal items stop being attracted when the main inventory is full, while instant pickups such as hearts and mana stars still work. The mount icon direction matches the minimap display.`],
+  [`骑乘时可穿过物块，固定速度飞行，免疫摔落并保持呼吸；会像吸铁石一样吸附周围约 50 格内的掉落物。普通物品在玩家主背包已满时不再继续吸附，心和魔力星等即时拾取物照常生效；坐骑图标方向与小地图显示保持一致。挥砍武器时即使攻击方向与移动方向相反，鲸鱼也会保持移动方向的朝向，不会来回翻转。`, `While mounted it flies through blocks at a fixed speed, immune to fall damage and breathing; it pulls in drops within about 50 tiles like a magnet. Ordinary items stop being pulled once your main inventory is full, while hearts and mana stars still work; the mount icon direction matches the minimap. When you swing a weapon against your movement direction, the whale keeps facing its movement direction instead of flipping back and forth.`],
   [`工具槽`, `Tool Slot`],
   [`支持镐子或钻头；工具强度不足时不能派遣。`, `Supports pickaxes or drills; dispatch is unavailable if tool power is insufficient.`],
   [`支持镐子或钻头；工具强度不足时不能派遣，镐力需求按原版方块判断。`, `Supports pickaxes or drills; dispatch is unavailable if tool power is insufficient. Pick power requirements follow the vanilla blocks.`],
@@ -4163,6 +4175,7 @@ const I18N_EXTRA_DATA = new Map([
   [`渔力固定为 200，匣子判定约 22%，普通鱼和任务鱼不会被完全挤掉。`, `Fishing power is fixed at 200, crate chance is about 22%, and normal fish and quest fish are not completely pushed out.`],
   [`除金蠕虫外，鱼饵每次约 15% 消耗；金蠕虫约 1/20 消耗。鱼饵用完后任务结束。`, `Except for Gold Worms, bait has about a 15% consumption chance each time; Gold Worms are about 1/20. The task ends when bait runs out.`],
   [`蜂蜜和熔岩不会混入普通高度层鱼池。`, `Honey and lava do not mix into normal height-layer fish pools.`],
+  [`钓点附近会有水面漂浮感：鲸鱼贴着实际水面下潜，水浅时也会尽量贴近水面，而不是悬在水面上方。`, `The whale hugs the real water surface: in shallow water it stays as close to the surface as it can instead of hovering above it.`],
   [`环境与高度层`, `Environment & Height Layer`],
   [`例子`, `Example`],
   [`结果`, `Result`],
