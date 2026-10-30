@@ -3432,8 +3432,9 @@ body::before {
             <p>回声鲸挖矿需要玩家预先放好工具和目标物块。派遣后是主鲸 + 3 只小鲸的四人小队，各自租下一片 96×96 格作业区同时采集；区内挖空后会换到下一片，飞行和采掘途中还会点亮周围小地图。</p>
             <div class="manual-table">
               <div class="manual-row manual-table-head"><span>项目</span><span>说明</span></div>
-              <div class="manual-row"><strong>工具槽</strong><span>支持镐子或钻头；工具强度不足时不能派遣。</span></div>
+              <div class="manual-row"><strong>工具槽</strong><span>支持镐子或钻头；工具强度不足时不能派遣，镐力需求按原版方块判断。</span></div>
               <div class="manual-row"><strong>目标槽</strong><span>放入要采掘的实体物块；生命水晶、各色宝石和琥珀也可以作为目标。</span></div>
+              <div class="manual-row"><strong>状态提示</strong><span>放入有效目标物块后，状态文字会变绿并显示“已放入目标物块”。</span></div>
               <div class="manual-row"><strong>背包</strong><span>20 格任务背包，收纳采掘和钓鱼所得，可全部取出或整理。</span></div>
               <div class="manual-row"><strong>采掘上限</strong><span>默认单次最多 300 格，可在配置中调到 0 到 2000；设为 0 时不能派遣。</span></div>
               <div class="manual-row"><strong>四人小队</strong><span>主鲸 + 3 只小鲸同时出动，共用同一个采掘上限。</span></div>
@@ -3460,6 +3461,7 @@ body::before {
               <div class="manual-row"><strong>确认环境</strong><span>左键确认时，钓鱼环境按玩家当前位置固定；玩家之后移动不会改变这次任务的环境。</span></div>
               <div class="manual-row"><strong>任务鱼状态</strong><span>有渔夫、今日任务未完成且玩家/鲸鱼背包里还没有任务鱼时，面板会显示今日任务；当前环境或已锁定水域符合时会用绿色文字提示。</span></div>
               <div class="manual-row"><strong>开始钓鱼</strong><span>回声鲸飞到钓点附近持续钓鱼，渔获进入鲸鱼背包。</span></div>
+              <div class="manual-row"><strong>钓鱼速度</strong><span>默认 1.5 倍；可在配置里调到 0.5 到 2，数值越高，两次渔获之间的等待越短。</span></div>
               <div class="manual-row"><strong>拾取小鲸</strong><span>钓鱼期间同样有 1 只小鲸留在玩家身边捡掉落物，不参与钓鱼，也不能骑乘。</span></div>
               <div class="manual-row"><strong>召回</strong><span>任务中可用召回按钮让回声鲸返回。</span></div>
             </div>
@@ -3524,6 +3526,7 @@ body::before {
               <div class="manual-row"><strong>鼠标皮肤</strong><span>开关四帧动画鼠标替换。</span><span>默认开启，按个人习惯选择。</span></div>
               <div class="manual-row"><strong>物品浏览器按钮</strong><span>可开启右键拖动，并配置 X/Y 坐标。</span><span>按钮挡 UI 时开启拖动。</span></div>
               <div class="manual-row"><strong>回声鲸单次采掘上限</strong><span>范围 0 到 2000，默认 300。</span><span>设为 0 会禁用派遣采掘。</span></div>
+              <div class="manual-row"><strong>回声鲸钓鱼速度</strong><span>范围 0.5 到 2，默认 1.5。</span><span>数值越高，钓鱼等待越短。</span></div>
               <div class="manual-row"><strong>辅助攻击</strong><span>开启后可用按钮或“切换辅助攻击”快捷键。</span><span>默认关闭；单人模式使用。</span></div>
               <div class="manual-row"><strong>辅助攻击科幻滤镜</strong><span>关闭、简洁、完整三档 HUD。</span><span>默认完整；想清爽可选简洁或关闭。</span></div>
               <div class="manual-row"><strong>辅助攻击按钮</strong><span>可开启右键拖动，并配置 X/Y 坐标。</span><span>按钮挡 UI 时开启拖动。</span></div>
@@ -3552,6 +3555,7 @@ body::before {
               <div class="manual-row"><strong>花精灵不补种</strong><span>她只会在成功收割成熟或开花草药后，把同一种草药补回原位；空地、空盆或被破坏的种植位置需要玩家手动处理。</span></div>
               <div class="manual-row"><strong>回声鲸不能钓熔岩</strong><span>需要具备熔岩钓鱼能力的鱼竿、熔岩鱼饵，或玩家饰品栏中已生效的防熔岩渔具袋、防熔岩钓钩等效果；选择的熔岩体也要达到最低液体格数。</span></div>
               <div class="manual-row"><strong>回声鲸钓不到某类鱼</strong><span>确认派遣时玩家所在环境和高度层。选择提示会显示已锁定环境，具体环境中也会混入对应高度通用渔获。</span></div>
+              <div class="manual-row"><strong>回声鲸钓鱼太慢</strong><span>在配置里把“回声鲸钓鱼速度”调高，默认 1.5，最高 2；数值越高，两次渔获之间的等待越短。</span></div>
               <div class="manual-row"><strong>任务鱼环境符合但没出</strong><span>任务鱼不是保底；如果面板显示“当前环境符合”或“当前水域符合”，说明环境条件通过，仍需要等钓鱼判定命中。</span></div>
               <div class="manual-row"><strong>任务鱼失败提示不出现</strong><span>只有接了今日任务、还没完成且没有持有任务鱼，并且本轮在可钓出该任务鱼的水域尝试过但没钓到，结束或召回时才会提示。</span></div>
               <div class="manual-row"><strong>背包空间不足</strong><span>回声鲸钓鱼前至少需要 10 个鲸鱼背包空位；采掘或花精灵收获袋满了则需要取出或整理。</span></div>
@@ -4147,6 +4151,7 @@ const I18N_EXTRA_DATA = new Map([
   [`骑乘时可穿过物块，固定速度飞行，免疫摔落并保持呼吸；会像吸铁石一样吸附周围约 50 格内的掉落物。普通物品在玩家主背包已满时不再继续吸附，心和魔力星等即时拾取物照常生效；坐骑图标方向与小地图显示保持一致。`, `While mounted, it can pass through tiles, flies at a fixed speed, prevents fall damage, and keeps breathing. It attracts drops within about 50 tiles like a magnet. Normal items stop being attracted when the main inventory is full, while instant pickups such as hearts and mana stars still work. The mount icon direction matches the minimap display.`],
   [`工具槽`, `Tool Slot`],
   [`支持镐子或钻头；工具强度不足时不能派遣。`, `Supports pickaxes or drills; dispatch is unavailable if tool power is insufficient.`],
+  [`支持镐子或钻头；工具强度不足时不能派遣，镐力需求按原版方块判断。`, `Supports pickaxes or drills; dispatch is unavailable if tool power is insufficient. Pick power requirements follow the vanilla blocks.`],
   [`续采`, `Resume Mining`],
   [`因背包将满而暂停后，清理空间即可继续。`, `If paused because the backpack is nearly full, clear space to continue.`],
   [`搜索`, `Search`],
@@ -4307,6 +4312,15 @@ const I18N_EXTRA_DATA = new Map([
   [`小鱼干召唤；宠物拾取掉落物，左键骑乘穿块移动，右键打开挖矿/钓鱼任务面板；挖矿时主鲸带 3 只小鲸分区采集，任务期间身边还会留 1 只拾取小鲸。`, `Summoned with Dried Fish; the pet picks up drops, left-click mounts and phases through blocks, right-click opens the mining/fishing task panel; when mining, the main whale leads three helpers across separate regions, and an extra pickup whale stays by the player during tasks.`],
   [`拾取小鲸`, `Pickup Whale`],
   [`返程`, `Return Trip`],
+  [`状态提示`, `Status Hint`],
+  [`放入有效目标物块后，状态文字会变绿并显示“已放入目标物块”。`, `After a valid target block is placed, the status text turns green and shows "Target block is set."`],
+  [`钓鱼速度`, `Fishing Speed`],
+  [`默认 1.5 倍；可在配置里调到 0.5 到 2，数值越高，两次渔获之间的等待越短。`, `Default 1.5x; configurable from 0.5 to 2 in mod config. Higher values shorten the wait between catches.`],
+  [`回声鲸钓鱼速度`, `Echo Whale Fishing Speed`],
+  [`范围 0.5 到 2，默认 1.5。`, `Range 0.5 to 2, default 1.5.`],
+  [`数值越高，钓鱼等待越短。`, `Higher values mean shorter fishing waits.`],
+  [`回声鲸钓鱼太慢`, `Echo Whale Fishing Too Slow`],
+  [`在配置里把“回声鲸钓鱼速度”调高，默认 1.5，最高 2；数值越高，两次渔获之间的等待越短。`, `Raise "Echo Whale Fishing Speed" in mod config (default 1.5, max 2). Higher values shorten the wait between catches.`],
 ]);
 
 I18N_EXTRA_DATA.forEach((value, key) => {
