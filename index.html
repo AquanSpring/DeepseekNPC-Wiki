@@ -1820,6 +1820,32 @@ body.manual-open {
 }
 
 @media (max-width: 760px) {
+  html {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+    background: #071323 !important;
+  }
+
+  body::before {
+    display: none;
+  }
+
+  .topbar {
+    position: relative;
+    top: auto;
+    flex: 0 0 auto;
+  }
+
   .topbar-inner {
     width: min(var(--max-width), calc(100% - 24px));
     min-height: 64px;
@@ -1875,23 +1901,42 @@ body.manual-open {
   }
 
   .page {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
     width: 100%;
-    padding: 0 12px 34px;
+    min-height: 0;
+    margin: 0;
+    padding: 0 12px;
     gap: 0;
-    min-width: 0;
+    overflow: hidden;
   }
 
   .content {
+    flex: 1 1 auto;
     width: 100%;
     max-width: calc(100vw - 24px);
+    min-height: 0;
+    padding-bottom: 34px;
     overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .content::-webkit-scrollbar {
+    display: none;
   }
 
   .sidebar {
-    position: sticky;
-    top: 82px;
+    position: relative;
+    top: auto;
+    flex: 0 0 auto;
     z-index: 18;
-    margin: 0 -12px 14px;
+    margin: 0 -12px 8px;
     width: calc(100% + 24px);
     min-width: 0;
     -webkit-backdrop-filter: none;
@@ -1956,6 +2001,18 @@ body.manual-open {
 
   .side-select {
     display: block;
+  }
+
+  .side-select .mobile-select-menu {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .side-select .mobile-select-menu::-webkit-scrollbar {
+    display: none;
   }
 
   .hero {
@@ -2796,11 +2853,13 @@ body::before {
     }
     if (targets.size === 0) return;
     let scrollTimer = 0;
-    addEventListener('scroll', () => {
+    const pauseEffectsDuringScroll = () => {
       root.classList.add('visual-effects-scrolling');
       clearTimeout(scrollTimer);
       scrollTimer = setTimeout(() => root.classList.remove('visual-effects-scrolling'), 120);
-    }, { passive: true });
+    };
+    addEventListener('scroll', pauseEffectsDuringScroll, { passive: true });
+    document.querySelector('.content')?.addEventListener('scroll', pauseEffectsDuringScroll, { passive: true });
     if (!('IntersectionObserver' in window)) return;
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       entry.target.classList.toggle('visual-effect-offscreen', !entry.isIntersecting);
@@ -4668,6 +4727,7 @@ if (document.readyState === 'loading') {
 // ===== ORIGINAL SCRIPT (preserved below) =====
 (() => {
   const links = Array.from(document.querySelectorAll('a[href^="#"]'));
+  const pageContent = document.querySelector(".content");
   const manualTrigger = document.getElementById("manualTrigger");
   const manualOverlay = document.getElementById("manualOverlay");
   const manualClose = document.getElementById("manualClose");
@@ -5104,7 +5164,24 @@ if (document.readyState === 'loading') {
   });
 
   const headerOffset = 96;
-  const getTargetTop = (target) => target.getBoundingClientRect().top + window.scrollY - headerOffset;
+  const getPageScrollContainer = () => window.matchMedia("(max-width: 760px)").matches ? pageContent : null;
+  const getTargetTop = (target) => {
+    const container = getPageScrollContainer();
+    if (container) {
+      return container.scrollTop + target.getBoundingClientRect().top - container.getBoundingClientRect().top;
+    }
+    return target.getBoundingClientRect().top + window.scrollY - headerOffset;
+  };
+
+  const scrollToTarget = (target, behavior) => {
+    const container = getPageScrollContainer();
+    const top = getTargetTop(target);
+    if (container) {
+      container.scrollTo({ top, behavior });
+    } else {
+      window.scrollTo({ top, behavior });
+    }
+  };
 
   const scrollToHashTarget = (behavior = "auto") => {
     const hash = window.location.hash;
@@ -5117,10 +5194,7 @@ if (document.readyState === 'loading') {
       return;
     }
 
-    window.scrollTo({
-      top: getTargetTop(target),
-      behavior
-    });
+    scrollToTarget(target, behavior);
     setActive(target.id);
   };
 
@@ -5150,21 +5224,29 @@ if (document.readyState === 'loading') {
     }
     lockedActiveId = "";
 
-    const bottomGap = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+    const container = getPageScrollContainer();
+    const scrollTop = container ? container.scrollTop : window.scrollY;
+    const scrollHeight = container ? container.scrollHeight : document.documentElement.scrollHeight;
+    const viewportHeight = container ? container.clientHeight : window.innerHeight;
+    const containerTop = container ? container.getBoundingClientRect().top : 0;
+    const bottomGap = scrollHeight - (scrollTop + viewportHeight);
     if (bottomGap <= 8) {
       const lastId = sections[sections.length - 1].id;
       setActive(clickedActiveId || lastId);
       return;
     }
 
-    const probeLine = window.scrollY + headerOffset + 48;
+    const probeLine = scrollTop + (container ? 48 : headerOffset + 48);
+    const getSectionStart = (section) => container
+      ? scrollTop + section.getBoundingClientRect().top - containerTop
+      : section.offsetTop;
     let current = sections[0];
 
     for (let i = 0; i < sections.length; i += 1) {
       const section = sections[i];
       const next = sections[i + 1];
-      const start = section.offsetTop;
-      const end = next ? next.offsetTop : document.documentElement.scrollHeight;
+      const start = getSectionStart(section);
+      const end = next ? getSectionStart(next) : scrollHeight;
 
       if (probeLine >= start && probeLine < end) {
         current = section;
@@ -5185,10 +5267,7 @@ if (document.readyState === 'loading') {
       }
 
       event.preventDefault();
-      window.scrollTo({
-        top: getTargetTop(target),
-        behavior: "smooth"
-      });
+      scrollToTarget(target, "smooth");
       lockedActiveId = target.id;
       lockedActiveUntil = performance.now() + clickActiveLockMs;
       clickedActiveId = target.id;
@@ -5206,10 +5285,7 @@ if (document.readyState === 'loading') {
         return;
       }
 
-      window.scrollTo({
-        top: getTargetTop(target),
-        behavior: "smooth"
-      });
+      scrollToTarget(target, "smooth");
       lockedActiveId = target.id;
       lockedActiveUntil = performance.now() + clickActiveLockMs;
       clickedActiveId = target.id;
@@ -5226,6 +5302,7 @@ if (document.readyState === 'loading') {
   requestAnimationFrame(() => scrollToHashTarget("auto"));
   window.addEventListener("load", () => scrollToHashTarget("auto"));
   window.addEventListener("scroll", updateActiveLink, { passive: true });
+  pageContent?.addEventListener("scroll", updateActiveLink, { passive: true });
   window.addEventListener("resize", updateActiveLink);
 })();
 
