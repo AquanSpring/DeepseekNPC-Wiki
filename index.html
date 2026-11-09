@@ -1888,13 +1888,14 @@ body.manual-open {
   }
 
   .sidebar {
-    position: sticky;
-    top: 64px;
-    z-index: 18;
+    position: static;
+    top: auto;
+    z-index: auto;
     margin: 0 -12px 14px;
     width: calc(100% + 24px);
     min-width: 0;
-    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   .side-panel {
